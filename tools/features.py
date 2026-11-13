@@ -137,6 +137,42 @@ def comps():
         out.append((title, '', imgs))
     return out
 
+# ---------------------------------------------------------------- personal pieces with their working files
+def personal():
+    base = os.path.join(UP, 'WB sketches')
+    PAGES = [
+      ('spinefall-gate', 'Spinefall Gate', 'Personal worldbuilding project.', 'finalcompfinalv2.png', [
+        ('Shape sketches', [('1.png', ''), ('1.1.png', ''), ('wk2.1.png', ''), ('1.1pres.png', 'Chosen silhouettes')]),
+        ('Thumbnails', [('0pres.png', ''), ('comps.png', '')]),
+        ('3D block-in', [('week3/week3front34.png', ''), ('week3/week3back34.png', ''), ('week3/week3interiorfront.png', ''), ('week3/week3interiorback.png', ''), ('week5/shoebox.png', 'Paintover tests')]),
+        ('Exterior', [('week4frontgatesketch.png', 'Sketch over the block-in'), ('week4forwardwip.png', ''), ('week4forward.png', ''), ('week4forwardfinal.png', ''), ('54356.png', ''), ('654874.png', ''), ('week6v3.png', '')]),
+        ('Interior', [('backwardv1.png', ''), ('backwardv2.png', ''), ('week4backflatwip.png', ''), ('week4backflatfinal.png', ''), ('121414.png', '')]),
+        ('Props and kit', [('heroprop.png', ''), ('kit.png', ''), ('propsheet.png', '')]),
+        ('Key frame: the crossing', [('comp1.png', 'First pass'), ('comp1v3.png', ''), ('comp1v5.png', ''), ('comp1v7.png', 'Final values')]),
+        ('Key frame: beyond the gate', [('finalcompwip.png', 'Value rough'), ('finalcomp.png', ''), ('finalcompfinal.png', 'Final values'), ('finalcomp2.png', 'Color pass'), ('finalcompfinalv2.png', 'Final')]),
+        ('Presentation', [(f'final presentation/JPEG/Hell_Vis_Dev_Final_v4-{n}.jpg', '') for n in range(1, 10)]),
+      ]),
+      ('war-cry', 'War Cry', 'Personal illustration.', 'warcry/warcry-nightfallmaster.png', [
+        ('Sketch', [('warcry/warcrywip00.png', '')]),
+        ('Values', [('warcry/warcrywip01.png', ''), ('warcry/warcrywip03.png', ''), ('warcry/warcrywip05.png', ''), ('warcry/warcrywip08.png', ''), ('warcry/warcrywip09.png', '')]),
+        ('Color', [('warcry/warcrywip09-3.png', ''), ('warcry/warcrywip09-5.png', ''), ('warcry/warcrywip09-6.png', '')]),
+        ('Final', [('warcry/warcry-nightfallmaster.png', '')]),
+      ]),
+    ]
+    out = []
+    for slug, title, note, cover, secs in PAGES:
+        built = []; cov = None
+        for t, files in secs:
+            imgs = []
+            for fn, c in files:
+                src = os.path.join(base, fn)
+                if not os.path.exists(src): continue
+                i = staged(src, 'personal', '../../'); i['cap'] = c; imgs.append(i)
+                if fn == cover: cov = i
+            built.append((t, imgs))
+        out.append((slug, title, note, cov, built))
+    return out
+
 # ---------------------------------------------------------------- art direction (LCAD)
 def direction():
     L = os.path.join(UP, 'LCAD/0_OLD')
@@ -183,6 +219,7 @@ def main():
     pro = professional()
     comp_groups = comps()
     dir_sections = direction()
+    pers = personal()
     slides = [mirrored(i['file'], '../') for i in mirror.images('academic')]
     resume_img = mirrored(mirror.images('resume')[0]['file'], '../')
     size_of = run_jobs()
@@ -211,6 +248,15 @@ def main():
     page(os.path.join(OUT, 'process', 'comps', 'index.html'), 'Color comps', body, depth=2, active='Process')
     Image.open(os.path.join(OUT, cover['thumb'].replace('../../', ''))).save(os.path.join(OUT, 'process', 'cover-comps.webp'))
 
+    # personal pieces
+    for slug, title, note, cov, secs in pers:
+        body = f"<p class='crumb'><a href='../'>Process</a></p><h1>{esc(title)}</h1><p class='note'>{esc(note)}</p>"
+        for t, imgs in secs:
+            imgs = sized(imgs, size_of)
+            if imgs: body += f"<section><h2>{esc(t)}</h2>{gallery(imgs)}</section>"
+        page(os.path.join(OUT, 'process', slug, 'index.html'), title, body, depth=2, active='Process')
+        Image.open(os.path.join(OUT, cov['thumb'].replace('../../', ''))).save(os.path.join(OUT, 'process', f'cover-{slug}.webp'))
+
     # art direction
     body = ("<h1>Art direction</h1><p class='note'>Laguna College of Art + Design, 2022 to present. Student work shown with my marks on top.</p>"
             "<nav class='jump'><a href='#team'>Team project</a>" + ''.join(f"<a href='#{k}'>{esc(t)}</a>" for k, t, _, _ in dir_sections) + "</nav>"
@@ -228,7 +274,7 @@ def main():
 
     # drop images no longer referenced
     keep = {j[1] for j in JOBS}
-    for sub in ('t', 'img/comps', 'img/direction'):
+    for sub in ('t', 'img/comps', 'img/direction', 'img/personal'):
         d = os.path.join(OUT, sub)
         for f in os.listdir(d) if os.path.isdir(d) else []:
             if os.path.join(d, f) not in keep: os.remove(os.path.join(d, f))

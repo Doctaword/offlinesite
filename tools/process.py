@@ -122,6 +122,7 @@ def main():
             if os.path.join(dp, fn) not in keep: os.remove(os.path.join(dp, fn))
     size_of = {j[1]: s for j, s in zip(jobs, sizes)}
     index_cards = []
+    PERSONAL = [('spinefall-gate', 'Spinefall Gate'), ('war-cry', 'War Cry')]   # pages built by features.py
     for c in chars:
         sections = []; total = 0; cover = None
         for key, title, blurb in STAGES:
@@ -148,12 +149,13 @@ def main():
            "<a class='card' href='comps/'><img loading='lazy' src='cover-comps.webp' alt=''><b>Color comps for animation backgrounds</b></a>"
     for name, s, cover, total, stages in index_cards:
         body += f"<a class='card' href='{s}/'><img loading='lazy' src='{cover}' alt=''><b>{esc(name)}</b></a>"
+    for s_, n_ in PERSONAL: body += f"<a class='card' href='{s_}/'><img loading='lazy' src='cover-{s_}.webp' alt=''><b>{esc(n_)}</b></a>"
     body += "</div>"
     page(os.path.join(OUT, 'index.html'), 'Process', body, depth=1, active='Process')
     Image.open(os.path.join(OUT, index_cards[0][2])).save(os.path.join(OUT, 'cover.webp'))
     import shutil
     for d in os.listdir(OUT):   # pages of characters no longer included
-        if os.path.isdir(os.path.join(OUT, d)) and d not in {c[1] for c in index_cards} | {'img', 'comps'}: shutil.rmtree(os.path.join(OUT, d))
+        if os.path.isdir(os.path.join(OUT, d)) and d not in {c[1] for c in index_cards} | {'img', 'comps'} | {x for x, _ in PERSONAL}: shutil.rmtree(os.path.join(OUT, d))
     for d in os.listdir(os.path.join(OUT, 'img')):
         if d not in {c[1] for c in index_cards}: shutil.rmtree(os.path.join(OUT, 'img', d))
     json.dump({'characters': [(n, s, t) for n, s, _, t, _ in index_cards], 'left_out_generated': skipped_ai}, open(os.path.join(OUT, 'summary.json'), 'w'), indent=1)
