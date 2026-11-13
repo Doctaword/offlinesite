@@ -148,6 +148,7 @@ def main():
     index_cards.sort(key=lambda c: ('Feedback and notes' not in c[4], c[1] != 'doctor-doom-infamous-iron-man', -len(c[4]), -c[3]))   # redlined characters on top, then   # Doctor Doom first (pose and thumbnail options), then the most complete stories
     cards = [('comps', 'Color comps for animation backgrounds', 'cover-comps.webp')] + [(s_, n_, cv) for n_, s_, cv, _, _ in index_cards] + [(s_, n_, f'cover-{s_}.webp') for s_, n_ in PERSONAL]
     order = {s_: n for n, s_ in enumerate(OV.get('card_order', []))}   # Andrew's own ordering from the review page; anything new goes after it
+    cards = [c for c in cards if c[0] not in OV['drop_pages']]
     cards.sort(key=lambda c: order.get(c[0], len(order)))
     body = "<h1>Process</h1><p class='note'>Marvel Puzzle Quest. Broken Circle Studios, 505 Games, Marvel. Art direction: Amber Ansdell.</p><div class='cards'>"
     for s_, n_, cv in cards: body += f"<a class='card' href='{s_}/'><img loading='lazy' src='{cv}' alt=''><b>{esc(n_)}</b></a>"

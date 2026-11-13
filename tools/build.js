@@ -45,6 +45,8 @@ if (fs.existsSync(blockDir)) for (const f of fs.readdirSync(blockDir)) {
 const unesc = s => s.replace(/&quot;/g, '"').replace(/&amp;/g, '&');
 let version = '';
 // Each mirrored page is written twice: once as the untouched original, and once under features/site/ with the top bar added.
+// pages whose look depends on the light page background; every other page gets a black one, so iPadOS has no light colour to fade the top edge into
+const LIGHT_PAGES = ['back-4-blood', 'tinytina', 'work', 'new-page'];
 function render(p, outRel, up, head) {
   const depth = p ? p.split('/').length : 0; const pre = depth ? '../'.repeat(depth) : './';
   const root = pre + up;   // where m/, offline.js and the icons live, seen from this page
@@ -73,7 +75,7 @@ function render(p, outRel, up, head) {
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="Andrew Tran">
-<meta name="theme-color" content="#000000">
+<meta name="theme-color" content="#000000">${LIGHT_PAGES.includes(p) ? '' : '<style>html,body{background:#000!important}</style>'}
 <link rel="apple-touch-icon" href="${root}icon-180.png">${head ? head(pre) : ''}
 <script defer src="${root}offline.js"></script>
 </head>`);
