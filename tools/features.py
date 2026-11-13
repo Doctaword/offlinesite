@@ -162,17 +162,17 @@ def direction():
              ('Sketching for ED/week12demo.png', 'Sketching: vehicle studies brief'), ('Sketching for ED/week10demolectcrit.png', 'Sketching: skull studies brief'),
              ('Sketching for ED/Week 11/studydemo.png', 'Sketching: study and imagination brief'), ('Sketching for ED/Week 7/demolecture.png', 'Sketching: midterm and organic props brief'),
              ('demo1.png', 'Sketching: perspective homework')]
-    S.append(('more-briefs', 'Briefs from other classes', 'The same structure across character, environment and fundamentals classes: a clear ask, a count, and the question the design has to answer.',
+    S.append(('more-briefs', 'More briefs', 'The same structure across character, environment and fundamentals classes: a clear ask, a count, and the question the design has to answer.',
               mk([os.path.join(L, f) for f, _ in other], lambda f: dict((os.path.join(L, a), b) for a, b in other)[f])))
-    S.append(('redlines', 'Redlines on first sketches', 'Week 2 review of silhouette sketches. Red marks are mine, drawn over each artist’s sheet during the review to show the fix directly: silhouette, proportion, weight and where the eye should land.',
+    S.append(('redlines', 'Redlines', 'Week 2 review of silhouette sketches. Red marks are mine, drawn over each artist’s sheet during the review to show the fix directly: silhouette, proportion, weight and where the eye should land.',
               mk(ls('ED241F22/ED241/Week2/crit'), 'Sketch review with my redlines')))
     rounds = mk(ls('ED241F22/ED241/Week7/Drawovers'), 'Round 1, week 7: drawover') + mk(ls('ED241F22/ED241/Week9/paintovers'), 'Round 2, week 9: paintover') + mk(ls('ED241F22/ED241/Week11/paintovers'), 'Round 3, week 11: paintover')
-    S.append(('rounds', 'Three review rounds on one project', 'The same twelve artists at week 7, week 9 and week 11 of a character project. Each canvas holds their reference, their current pass and my drawover or paintover, so the direction given in one round can be checked against the next.', rounds))
+    S.append(('rounds', 'Three review rounds', 'The same twelve artists at week 7, week 9 and week 11 of a character project. Each canvas holds their reference, their current pass and my drawover or paintover, so the direction given in one round can be checked against the next.', rounds))
     demos = [('Env Design 1/cavedemo.png', 'Environment demo: cave interior'), ('Env Design 1/roomdemo.png', 'Environment demo: room cutaway'), ('Env Design 1/week5/demo.png', 'Environment demo'),
              ('Env Design 1/demowk11.png', 'Environment demo: gate design'), ('Env Design 1/week7demo.png', 'Environment demo: prop and signage set'), ('Env Design 1/demo.png', 'Environment demo: value and proportion'),
              ('FD163BS23/critdemo.png', 'Review demo: interior cutaway'), ('FD163BS23/critdemo2.png', 'Review demo: interior cutaway, second pass'), ('FD163BS23/week12/Emily Alvarez/drawoversdemo.png', 'Drawover demo'),
              ('Dynamic Sketching/week 11/crit.png', 'Review board: sea animals'), ('Dynamic Sketching Thursday/week 11/demo.png', 'Demo: sea animals'), ('Dynamic Sketching Thursday/week 12/demo.png', 'Demo: animals from reference and imagination')]
-    S.append(('demos', 'Showing the fix', 'When a note is hard to put into words I paint the answer. These are demos made live during reviews.',
+    S.append(('demos', 'Demos', 'When a note is hard to put into words I paint the answer. These are demos made live during reviews.',
               mk([os.path.join(L, f) for f, _ in demos], lambda f: dict((os.path.join(L, a), b) for a, b in demos)[f])))
     return S
 
@@ -186,14 +186,13 @@ def main():
     size_of = run_jobs()
 
     # professional
-    body = ("<h1>Professional work</h1><p class='lede'>Client work for games and animation, most relevant first. Tap any image, then swipe: the viewer runs through everything on this page in order.</p>"
+    body = ("<h1>Professional work</h1>"
             "<nav class='jump'>" + ''.join(f"<a href='#{s}'>{esc(t)}</a>" for s, t, *_ in pro) + "</nav>")
     for slug, title, credit, imgs, paras, yt in pro:
         body += f"<section id='{slug}'><h2>{esc(title)}</h2><p class='note'>{esc(credit)}</p>"
-        if slug == 'marvel-puzzle-quest': body += "<nav class='jump tight'><a href='../process/'>See the full process for 30 of these characters</a></nav>"
+        if slug == 'marvel-puzzle-quest': body += "<nav class='jump tight'><a href='../process/'>Process</a></nav>"
         body += gallery(imgs)
-        if paras: body += "<div class='text'>" + ''.join(f"<p>{esc(p)}</p>" for p in paras) + "</div>"
-        for y in yt: body += f"<nav class='jump tight'><a href='https://www.youtube.com/watch?v={y}'>Watch the trailer on YouTube <span>needs internet</span></a></nav>"
+        for y in yt: body += f"<nav class='jump tight'><a href='https://www.youtube.com/watch?v={y}'>Trailer <span>needs internet</span></a></nav>"
         body += "</section>"
     page(os.path.join(OUT, 'professional', 'index.html'), 'Professional work', body, depth=1, active='Professional')
     open(os.path.join(OUT, 'index.html'), 'w').write("<!doctype html><meta charset='utf-8'><title>Andrew Dat Tran</title>"
@@ -201,28 +200,25 @@ def main():
 
     # color comps
     body = ("<p class='crumb'><a href='../'>Process</a></p><h1>Color comps for animation backgrounds</h1>"
-            "<p class='lede'>Background paint at Titmouse for Pantheon and Digman!. Before a background was finished I presented options: the same layout under different light, or a rough and a clean pass, so the art director could choose and I could revise from the notes.</p>")
+            "<p class='note'>Background paint at Titmouse.</p>")
     cover = None
     for n, (t, b, imgs) in enumerate(comp_groups):
         imgs = sized(imgs, size_of)
         if not imgs: continue
         if n == 3 or cover is None: cover = imgs[-1]
-        body += f"<section><h2>{esc(t)}</h2><p class='note'>{esc(b)}</p>{gallery(imgs)}</section>"
+        body += f"<section><h2>{esc(t)}</h2>{gallery(imgs)}</section>"
     page(os.path.join(OUT, 'process', 'comps', 'index.html'), 'Color comps', body, depth=2, active='Process')
     Image.open(os.path.join(OUT, cover['thumb'].replace('../../', ''))).save(os.path.join(OUT, 'process', 'cover-comps.webp'))
 
     # art direction
-    body = ("<h1>Art direction: briefs, feedback and follow-through</h1>"
-            "<p class='lede'>Since 2022 I have directed other artists’ work as an instructor at Laguna College of Art + Design. The loop is the one a commissioning art director runs: write a brief with clear deliverables, "
-            "review sketches, give direction the artist can act on, and check the next round against it. Everything below is from my own classes. Student work is shown with my marks on top.</p>"
-            "<nav class='jump'><a href='#team'>Directing a team project</a>" + ''.join(f"<a href='#{k}'>{esc(t)}</a>" for k, t, _, _ in dir_sections) + "</nav>"
-            "<section id='team'><h2>Directing a team project</h2><p class='note'>Environment Design 2. I wrote an 11 page brief around a shared world pitch, acted as producer for three teams, set weekly milestones, "
-            "and had each team build its own style guide for shape language, palette and visual rules.</p>" + gallery(slides) + "</section>")
+    body = ("<h1>Art direction</h1><p class='note'>Laguna College of Art + Design, 2022 to present. Student work shown with my marks on top.</p>"
+            "<nav class='jump'><a href='#team'>Team project</a>" + ''.join(f"<a href='#{k}'>{esc(t)}</a>" for k, t, _, _ in dir_sections) + "</nav>"
+            "<section id='team'><h2>Team project</h2>" + gallery(slides) + "</section>")
     dcover = None
     for k, t, b, imgs in dir_sections:
         imgs = sized(imgs, size_of)
         if k == 'redlines' and imgs: dcover = imgs[0]
-        body += f"<section id='{k}'><h2>{esc(t)}</h2><p class='note'>{esc(b)}</p>{gallery(imgs)}</section>"
+        body += f"<section id='{k}'><h2>{esc(t)}</h2>{gallery(imgs)}</section>"
     page(os.path.join(OUT, 'direction', 'index.html'), 'Art direction', body, depth=1, active='Art direction')
     Image.open(os.path.join(OUT, dcover['thumb'].replace('../', ''))).save(os.path.join(OUT, 'direction', 'cover.webp'))
 

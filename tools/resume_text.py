@@ -43,12 +43,9 @@ JOBS = [
 def resume_body(img, gallery):
     b = ("<div class='cv'><h1>Andrew Dat Tran</h1><p class='lede'>Illustrator, concept artist, background painter and educator. Aliso Viejo, CA.</p>"
          "<p class='note'>(949) 690-4546 &nbsp;·&nbsp; tranandrew16@gmail.com &nbsp;·&nbsp; andrewtranart.com &nbsp;·&nbsp; linkedin.com/in/andrew-d-tran</p>"
-         "<h2>Summary</h2><p>Illustrator with 1,000+ finished production paintings across licensed games and animation, and four years of directing other artists’ work. "
-         "On Marvel Puzzle Quest I painted 32 Marvel characters, five paintings each, inside a partner’s rules. At Titmouse I matched the look of four different productions. "
-         "At Laguna College of Art + Design I write the briefs, set the milestones and give the redlines. I print my own work, so I know what a file needs before it goes to press.</p>"
-         "<h2>What I do</h2><div class='fit'>")
+         "<div class='fit'>")
     for want, have, extra, href, link in FIT:
-        b += f"<div><b>{esc(want)}</b><p>{esc(have)}{' ' + esc(extra) if extra else ''}</p>" + (f"<a href='{href}'>{esc(link)}</a>" if href else '') + "</div>"
+        pass
     b += "</div><h2>Experience</h2>"
     for org, role, dates, sub, bullets in JOBS:
         b += f"<div class='job'><div class='jh'><b>{esc(org)}</b><span>{esc(dates)}</span></div><p class='role'>{esc(role)}</p><p class='note'>{esc(sub)}</p><ul>" + ''.join(f"<li>{esc(x)}</li>" for x in bullets) + "</ul></div>"

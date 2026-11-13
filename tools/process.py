@@ -25,8 +25,7 @@ NAMES = {'BladeClassic': 'Blade (Classic)', 'Cyclops Hellfire Gala': 'Cyclops (H
   'mariahillbaronesthor': 'Maria Hill, Baron Zemo and Thor', 'monica': 'Monica Rambeau', 'prowler': 'Prowler', 'psylocke': 'Psylocke', 'silk': 'Silk', 'spiderham 2099': 'Spider-Ham 2099',
   'thing': 'The Thing', 'yellow_jacket': 'Yellowjacket'}
 SKIP_DIRS = {'Templates', '_loose'}
-STAGES = [('ref', 'References and existing game art', 'Material I worked from, not my art: comic sources, costume details, in-game screenshots and earlier assets I had to match.'),
-          ('sketch', 'Sketches and thumbnails', 'Pose and composition options sent for a first pick.'),
+STAGES = [('sketch', 'Sketches and thumbnails', 'Pose and composition options sent for a first pick.'),
           ('line', 'Clean line', 'The chosen poses tightened up for approval before color.'),
           ('flats', 'Color flats', 'Local color and costume read, checked against the character model.'),
           ('render', 'Progress rounds', 'Each numbered version is a round sent for review, from rough to finished render.'),
@@ -42,8 +41,9 @@ def classify(name, rel):
     dated = re.match(r'(\d{4})-(\d{2})-\d{2}_', n)
     # Andrew joined the project in May 2022: anything older is existing game art he was matching, not his work
     if dated and (int(dated.group(1)), int(dated.group(2))) < (2022, 5): return 'ref'
-    if re.search(r'/og/|/ref[^/]*/|/mpq shots/|/reference', low): return 'ref'
-    if re.search(r'feedback|notat|notes|rejected|paintover|redline|drawover', n): return 'notes'
+    if re.search(r'/og/|/ref[^/]*/|/poses?/|/mpq shots/|/reference', low): return 'ref'
+    if re.search(r'refs|rejected|_comic-', n): return 'ref'   # reference boards, a comic panel, comic covers
+    if re.search(r'feedback|notat|notes|paintover|redline|drawover', n): return 'notes'
     if re.search(r'(^|[-_])refs?([-_.]|\d|$)|reference|screenshot', n): return 'ref'
     if re.search(r'sketch|thumb|rough', n) and not re.search(r'render', n): return 'sketch'
     if re.search(r'cleanline|lineart|[-_]line[-_]|[-_]lines?[-_.]', n): return 'line'
@@ -99,7 +99,9 @@ def main():
                 seen.add(digest)
                 if os.path.getsize(src) < 3000: continue
                 key = digest[:12]; lab, date = label(fn)
-                items.append({'stage': classify(fn, rel), 'label': lab, 'date': date, 'sort': fn.lower(), 'key': key, 'src': src})
+                stage = classify(fn, rel)
+                if stage == 'ref': continue   # reference, pose bases and existing game art are not shown: only work drawn from scratch
+                items.append({'stage': stage, 'label': lab, 'date': date, 'sort': fn.lower(), 'key': key, 'src': src})
                 jobs.append((src, os.path.join(OUT, 'img', cslug, key + '.webp'), 2200, 85))
                 jobs.append((src, os.path.join(OUT, 'img', cslug, key + '_t.webp'), 560, 78))
         if items: chars.append({'folder': folder, 'name': NAMES.get(folder, folder), 'slug': cslug, 'items': items})
@@ -126,18 +128,16 @@ def main():
         if not sections or all(t.startswith('References') for t, _, _ in sections): continue
         cover = cover or sections[-1][2][-1]['thumb']
         body = f"<p class='crumb'><a href='../'>Process</a></p><h1>{esc(c['name'])}</h1>"
-        body += f"<p class='lede'>{total} working files, in the order the work happened. Tap any image to open it, then swipe.</p>"
-        body += "<nav class='jump'>" + ''.join(f"<a href='#s{n}'>{esc(t)} <span>{len(im)}</span></a>" for n, (t, b, im) in enumerate(sections)) + "</nav>"
+        body += "<nav class='jump'>" + ''.join(f"<a href='#s{n}'>{esc(t)} </a>" for n, (t, b, im) in enumerate(sections)) + "</nav>"
         for n, (t, b, im) in enumerate(sections):
-            body += f"<section id='s{n}'><h2>{esc(t)}</h2><p class='note'>{esc(b)}</p>{gallery(im, t)}</section>"
+            body += f"<section id='s{n}'><h2>{esc(t)}</h2>{gallery(im, t)}</section>"
         page(os.path.join(OUT, c['slug'], 'index.html'), c['name'] + ' process', body, depth=2, active='Process')
         index_cards.append((c['name'], c['slug'], cover.replace('../', ''), total, [t for t, _, _ in sections]))
     index_cards.sort(key=lambda c: (c[1] != 'doctor-doom-infamous-iron-man', -len(c[4]), -c[3]))   # Doctor Doom first (pose and thumbnail options), then the most complete stories
-    body = "<h1>Process: from reference to final</h1><p class='lede'>Marvel Puzzle Quest, illustration for Broken Circle Studios, 505 Games and Marvel. Art direction: Amber Ansdell. " \
-           "Each character below keeps every stage I sent for review: references, sketches and pose options, clean line, color flats, render rounds, feedback and the final poses.</p><div class='cards'>" \
-           "<a class='card' href='comps/'><img loading='lazy' src='cover-comps.webp' alt=''><b>Color comps for animation backgrounds</b><span>Pantheon and Digman!: lighting options, rough to clean</span></a>"
+    body = "<h1>Process</h1><p class='note'>Marvel Puzzle Quest. Broken Circle Studios, 505 Games, Marvel. Art direction: Amber Ansdell.</p><div class='cards'>" \
+           "<a class='card' href='comps/'><img loading='lazy' src='cover-comps.webp' alt=''><b>Color comps for animation backgrounds</b></a>"
     for name, s, cover, total, stages in index_cards:
-        body += f"<a class='card' href='{s}/'><img loading='lazy' src='{cover}' alt=''><b>{esc(name)}</b><span>{total} files · {len(stages)} stages</span></a>"
+        body += f"<a class='card' href='{s}/'><img loading='lazy' src='{cover}' alt=''><b>{esc(name)}</b></a>"
     body += "</div>"
     page(os.path.join(OUT, 'index.html'), 'Process', body, depth=1, active='Process')
     Image.open(os.path.join(OUT, index_cards[0][2])).save(os.path.join(OUT, 'cover.webp'))
