@@ -5,6 +5,11 @@
 (function () {
   var BASE = new URL('.', document.currentScript.src).href;
   var CACHE = 'offline-site-v1';
+  var homeMeta = document.querySelector('meta[name="ofl-home"]');
+  var HOME = homeMeta ? new URL(homeMeta.content, location.href).href : BASE;   // the features version has its own home
+  var FEATURES = location.href.indexOf(BASE + 'features/') === 0;               // the original copy does not download the features pages
+  var MODE = FEATURES ? 'f' : 'o';
+  function mine(path) { return FEATURES || path.indexOf('features/') !== 0; }
   var standalone = window.navigator.standalone === true || (window.matchMedia && matchMedia('(display-mode: standalone)').matches);
 
   var css = document.createElement('style');
@@ -41,10 +46,10 @@
 
   // ---- 3. Back button in Home Screen mode --------------------------------------------
   function addBack() {
-    var atHome = location.href.split('#')[0].split('?')[0] === BASE;
+    var atHome = location.href.split('#')[0].split('?')[0] === HOME;
     if (!standalone || atHome) return;
     var b = document.createElement('button'); b.id = 'ofl-back'; b.setAttribute('aria-label', 'Back'); b.textContent = '‹';
-    b.addEventListener('click', function () { if (history.length > 1) history.back(); else location.href = BASE; });
+    b.addEventListener('click', function () { if (history.length > 1) history.back(); else location.href = HOME; });
     document.body.appendChild(b);
   }
   if (document.body) addBack(); else document.addEventListener('DOMContentLoaded', addBack);
@@ -57,7 +62,7 @@
     if (navigator.storage && navigator.storage.persist) navigator.storage.persist();
     return fetch(BASE + 'm/manifest.json?__fresh=' + Date.now(), { cache: 'no-store' }).then(function (r) { if (!r.ok) throw 0; return r.text(); }).then(function (text) {
       var m = JSON.parse(text);
-      var done = localStorage.getItem('ofl-complete');
+      var done = localStorage.getItem('ofl-complete-' + MODE);
       if (done === m.version) return;
       return caches.open(CACHE).then(function (cache) {
         return cache.put(BASE + 'm/manifest.json', new Response(text, { headers: { 'Content-Type': 'application/json' } })).then(function () {
@@ -65,11 +70,11 @@
           return cache.keys();
         }).then(function (keys) {
           var have = {}; keys.forEach(function (k) { have[k.url] = 1; });
-          var pagesStale = localStorage.getItem('ofl-pages') !== m.version;
+          var pagesStale = localStorage.getItem('ofl-pages-' + MODE) !== m.version;
           var jobs = [], total = 0, got = 0;
-          m.pages.forEach(function (p) { var u = BASE + (p ? p + '/' : ''); if (pagesStale || !have[u]) jobs.push([u, 150000]); });
+          m.pages.forEach(function (p) { var u = BASE + (p ? p + '/' : ''); if (mine(p) && (pagesStale || !have[u])) jobs.push([u, 150000]); });
           ['offline.js', 'manifest.webmanifest', 'icon-180.png', 'icon-512.png'].forEach(function (f) { jobs.push([BASE + f, 20000]); });
-          m.files.forEach(function (f) { var u = BASE + f[0]; if (!have[u]) jobs.push([u, f[2]]); });
+          m.files.forEach(function (f) { var u = BASE + f[0]; if (mine(f[0]) && !have[u]) jobs.push([u, f[2]]); });
           jobs.forEach(function (j) { total += j[1]; });
           var wanted = {}; wanted[BASE + 'm/manifest.json'] = 1; wanted[BASE] = 1;
           m.pages.forEach(function (p) { wanted[BASE + (p ? p + '/' : '')] = 1; });
@@ -93,7 +98,7 @@
           return Promise.all(ws).then(function () {
             if (failed) { say('Could not save ' + failed + ' files. Reopen with internet to retry.', '', 0); return; }
             keys.forEach(function (k) { if (!wanted[k.url]) cache.delete(k); });
-            localStorage.setItem('ofl-pages', m.version); localStorage.setItem('ofl-complete', m.version);
+            localStorage.setItem('ofl-pages-' + MODE, m.version); localStorage.setItem('ofl-complete-' + MODE, m.version);
             if (navigator.serviceWorker.controller) navigator.serviceWorker.controller.postMessage('reload-map');
             say('✓ Ready offline', 'ok', 6000);
           });

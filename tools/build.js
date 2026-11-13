@@ -44,8 +44,10 @@ if (fs.existsSync(blockDir)) for (const f of fs.readdirSync(blockDir)) {
 }
 const unesc = s => s.replace(/&quot;/g, '"').replace(/&amp;/g, '&');
 let version = '';
-for (const p of pages) {
+// Each mirrored page is written twice: once as the untouched original, and once under features/site/ with the top bar added.
+function render(p, outRel, up, head) {
   const depth = p ? p.split('/').length : 0; const pre = depth ? '../'.repeat(depth) : './';
+  const root = pre + up;   // where m/, offline.js and the icons live, seen from this page
   let h = pageHtml[p];
   // internal links -> relative, so the copy works under any address
   h = h.replace(/(href|src)="(?:https?:\/\/www\.andrewtranart\.com)?(\/(?!\/)[^"]*)?"/g, (all, attr, target) => {
@@ -53,7 +55,7 @@ for (const p of pages) {
     const hash = target.includes('#') ? target.slice(target.indexOf('#')) : ''; const clean = target.split('#')[0].split('?')[0].replace(/^\/|\/$/g, '');
     if (pages.includes(clean)) return `${attr}="${pre}${clean ? clean + '/' : ''}${hash}"`;
     const asset = urls[LIVE_HOST + '/' + clean];
-    if (asset !== undefined) return `${attr}="${pre}${files[asset][0]}${hash}"`;
+    if (asset !== undefined) return `${attr}="${root}${files[asset][0]}${hash}"`;
     return `${attr}="${pre}"`;
   });
   // native video blocks -> plain <video> playing the saved mp4
@@ -61,24 +63,47 @@ for (const p of pages) {
     const set = JSON.parse(unesc(s)), vid = JSON.parse(unesc(v)); const local = videos[vid.systemDataId];
     if (!local) { console.log('WARN no local video for', vid.systemDataId); return all; }
     const attrs = ['playsinline', 'webkit-playsinline', 'preload="auto"', set.muted ? 'muted' : '', set.autoPlay ? 'autoplay' : '', set.loop ? 'loop' : '', set.controls === 'full' || !set.autoPlay ? 'controls' : ''].filter(Boolean).join(' ');
-    return `<div class="ofl-native-video"><div class="native-video-player" style="${style}"><video class="ofl-video" ${attrs} poster="${pre}${local}.jpg" src="${pre}${local}.mp4"></video></div>`;
+    return `<div class="ofl-native-video"><div class="native-video-player" style="${style}"><video class="ofl-video" ${attrs} poster="${root}${local}.jpg" src="${root}${local}.mp4"></video></div>`;
   });
   if (h.includes('sqs-native-video"')) console.log('WARN unreplaced native video on', p);
   h = h.replace(/<meta name="viewport" content="[^"]*">/, '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">');
   h = h.replace('</head>', `<meta name="robots" content="noindex">
-<link rel="manifest" href="${pre}manifest.webmanifest">
+<link rel="manifest" href="${up ? pre + '../' : pre}manifest.webmanifest">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Andrew Tran">
 <meta name="theme-color" content="#000000">
-<link rel="apple-touch-icon" href="${pre}icon-180.png">
-<script defer src="${pre}offline.js"></script>
+<link rel="apple-touch-icon" href="${root}icon-180.png">${head ? head(pre) : ''}
+<script defer src="${root}offline.js"></script>
 </head>`);
-  const dir = path.join(DOCS, p); fs.mkdirSync(dir, { recursive: true }); fs.writeFileSync(path.join(dir, 'index.html'), h);
+  const dir = path.join(DOCS, outRel, p); fs.mkdirSync(dir, { recursive: true }); fs.writeFileSync(path.join(dir, 'index.html'), h);
   version += h.length + ':';
 }
+const mirrored = pages.slice();
+for (const p of mirrored) render(p, '', '', null);
+const FEATURES = fs.existsSync(path.join(ROOT, 'extra', 'features'));
+if (FEATURES) for (const p of mirrored) {
+  render(p, 'features/site', '../../', pre => `<meta name="ofl-home" content="${pre}"><link rel="stylesheet" href="${pre}../x/bar.css"><script defer src="${pre}../x/bar.js"></script>`);
+  pages.push('features/site' + (p ? '/' + p : ''));
+}
+
 for (const f of fs.readdirSync(SRC)) fs.copyFileSync(path.join(SRC, f), path.join(DOCS, f));
+// extra pages (process, direction, tailored resume...) live in ../extra and are copied on top of the mirror.
+// A folder there with an index.html becomes (or replaces) a page; every other file is saved for offline too.
+const EXTRA = path.join(ROOT, 'extra');
+const TYPE_BY_EXT = Object.fromEntries(Object.entries(EXT).map(([t, e]) => [e, t])); TYPE_BY_EXT['.pdf'] = 'application/pdf';
+(function walk(dir, rel) {
+  if (!fs.existsSync(dir)) return;
+  for (const f of fs.readdirSync(dir)) {
+    const src = path.join(dir, f), r = rel ? rel + '/' + f : f;
+    if (fs.statSync(src).isDirectory()) { walk(src, r); continue; }
+    if (f === 'summary.json') continue;
+    fs.mkdirSync(path.join(DOCS, rel), { recursive: true }); fs.copyFileSync(src, path.join(DOCS, r));
+    if (f === 'index.html') { if (!pages.includes(rel)) pages.push(rel); version += fs.statSync(src).size + ':'; }
+    else { fileIdx[r] = files.length; files.push([r, TYPE_BY_EXT[path.extname(f).toLowerCase()] || 'application/octet-stream', fs.statSync(src).size]); version += r + fs.statSync(src).size; }
+  }
+})(EXTRA, '');
 fs.writeFileSync(path.join(DOCS, '.nojekyll'), '');
 const crypto = require('crypto');
 const body = { pages, files, urls, blocks };
