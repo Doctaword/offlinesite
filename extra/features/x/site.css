@@ -64,5 +64,5 @@ p{margin:0 0 14px;max-width:70ch}
 .jump.tight{margin:0 0 12px}
 .card b{padding-bottom:12px}
 
-.cv .k{color:#fff;font-weight:600}
+.cv .k{color:var(--accent);font-weight:600}
 .job li{color:#b4b4b4}
