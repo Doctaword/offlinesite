@@ -1,6 +1,6 @@
 /* Top bar added to the copies of the original pages in the features version. */
-:root{--fxt:max(30px,env(safe-area-inset-top));--fxh:calc(64px + var(--fxt))}
-#fx-bar{position:fixed;top:0;left:0;right:0;z-index:2147482000;height:var(--fxh);padding:var(--fxt) max(12px,env(safe-area-inset-right)) 0 max(12px,env(safe-area-inset-left));
+:root{--fxt:max(54px,calc(env(safe-area-inset-top) + 20px));--fxh:calc(64px + var(--fxt))}
+#fx-bar{box-sizing:border-box;position:fixed;top:0;left:0;right:0;z-index:2147482000;height:var(--fxh);padding:var(--fxt) max(12px,env(safe-area-inset-right)) 0 max(12px,env(safe-area-inset-left));
   display:flex;align-items:center;justify-content:center;gap:8px;background:#0b0b0b;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #3a3a3a;
   font:600 16px/1 -apple-system,system-ui,sans-serif;overflow-x:auto;white-space:nowrap}
 #fx-bar a{color:#f4f4f4;text-decoration:none;padding:12px 18px;border-radius:999px;border:1px solid #444;-webkit-tap-highlight-color:transparent}
