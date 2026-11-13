@@ -1,27 +1,19 @@
-"""The tailored resume page. Every fact comes from Andrew's own resume (the image on /resume) and his site; nothing is added.
-The framing follows the Art Director, Universes Beyond posting: commissioning and directing illustrators, partner-IP research
-and style guides, print-ready review."""
+"""The resume page. Every fact comes from Andrew's own resume (the image on /resume) and his site; nothing is added.
+Emphasis is on directing artists, licensed IP and print production, in his own wording rather than a job posting's."""
 from pagekit import esc
 
 FIT = [
- ('Commission freelance illustrators and give them ongoing direction',
-  'Four years directing other artists at Laguna College of Art + Design. I write the briefs (scope, objectives, visual requirements, deliverables, evaluation criteria), review every round, and give feedback as critiques, drawovers and paintovers that turn a creative goal into a revision the artist can act on.',
-  'I have also spent five years on the other side of the brief as a contract and staff illustrator, so I know what a commission needs to say for an artist to hit it the first time.', '../direction/', 'See briefs, redlines and paintovers'),
- ('Research partner IP and turn reference into style guidance',
-  'Shipped art inside Marvel, Halo, Borderlands (Tiny Tina’s Wonderlands) and Back 4 Blood, working from client briefs and franchise style guides. Matched four distinct production styles at Titmouse across 850+ paintings.',
-  'In my team projects each group builds and maintains its own style guide for shape language, palette and visual rules, and I review work against it.', '../process/', 'See reference to final on Marvel Puzzle Quest'),
- ('A portfolio with a cinematic lens',
-  '850+ background paintings for television and feature animation: Pantheon, Digman!, Metalocalypse: Army of the Doomstar and The Second Best Hospital in the Galaxy. Created environment color keys and presented lighting options for art director review.',
-  '', '../process/comps/', 'See color comps'),
- ('Fantasy and card illustration',
-  'Card art for Back 4 Blood. 160+ character paintings for Marvel Puzzle Quest built to read at mobile size. Circles of Sin, an original seven part fantasy series of 19 paintings.',
-  '', '../professional/', 'See professional work'),
- ('Review print-ready files; print and press knowledge',
-  'I own and operate a Canon imagePROGRAF PRO-2000. For Circles of Sin I managed color, prepared print-ready files, ran quality control and produced fine art prints in house for online and convention sales.', '', '', ''),
- ('Passion for pop culture and knowledge of Magic',
-  'Magic: The Gathering player. Reached Top 200 in Legends of Runeterra in 2022. Exhibited and sold prints at Anime Expo, WonderCon, DesignerCon and L.A. Comic Con.', '', '', ''),
- ('Taking direction and pivoting',
-  'Every Marvel Puzzle Quest character went through sketch, line, color and render rounds with art director notes between them. The process pages keep each round and the notes.', '', '../process/', 'See the rounds and notes'),
+ ('Directing artists',
+  'Four years directing other artists at Laguna College of Art + Design. I write the briefs (scope, objectives, visual requirements, deliverables, evaluation criteria), review every round, and give feedback as critiques, drawovers and paintovers the artist can act on.',
+  '', '../direction/', 'Briefs, redlines and paintovers'),
+ ('Licensed IP',
+  'Shipped art inside Marvel, Halo, Borderlands (Tiny Tina\u2019s Wonderlands) and Back 4 Blood, working from client briefs and franchise style guides. 160+ character paintings for Marvel Puzzle Quest and card art for Back 4 Blood.',
+  '', '../process/', 'Reference to final on Marvel Puzzle Quest'),
+ ('Cinematic backgrounds',
+  '850+ background paintings for television and feature animation at Titmouse, matching four production styles. Environment color keys and lighting options presented for art director review.',
+  '', '../process/comps/', 'Color comps'),
+ ('Print production',
+  'I own and operate a Canon imagePROGRAF PRO-2000. For Circles of Sin, my original series of 19 paintings, I managed color, prepared print-ready files, ran quality control and sold the prints at Anime Expo, WonderCon, DesignerCon and L.A. Comic Con.', '', '', ''),
 ]
 
 JOBS = [
@@ -49,13 +41,12 @@ JOBS = [
 ]
 
 def resume_body(img, gallery):
-    b = ("<div class='cv'><p class='pill'>Prepared for: Art Director, Universes Beyond</p>"
-         "<h1>Andrew Dat Tran</h1><p class='lede'>Illustrator, concept artist, background painter and educator. Aliso Viejo, CA.</p>"
+    b = ("<div class='cv'><h1>Andrew Dat Tran</h1><p class='lede'>Illustrator, concept artist, background painter and educator. Aliso Viejo, CA.</p>"
          "<p class='note'>(949) 690-4546 &nbsp;·&nbsp; tranandrew16@gmail.com &nbsp;·&nbsp; andrewtranart.com &nbsp;·&nbsp; linkedin.com/in/andrew-d-tran</p>"
          "<h2>Summary</h2><p>Illustrator with 1,000+ finished production paintings across licensed games and animation, and four years of directing other artists’ work. "
          "On Marvel Puzzle Quest I painted 32 Marvel characters, five paintings each, inside a partner’s rules. At Titmouse I matched the look of four different productions. "
          "At Laguna College of Art + Design I write the briefs, set the milestones and give the redlines. I print my own work, so I know what a file needs before it goes to press.</p>"
-         "<h2>How my experience maps to the role</h2><div class='fit'>")
+         "<h2>What I do</h2><div class='fit'>")
     for want, have, extra, href, link in FIT:
         b += f"<div><b>{esc(want)}</b><p>{esc(have)}{' ' + esc(extra) if extra else ''}</p>" + (f"<a href='{href}'>{esc(link)}</a>" if href else '') + "</div>"
     b += "</div><h2>Experience</h2>"
