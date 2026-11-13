@@ -57,17 +57,26 @@ def main():
     pages += [parse('process/' + s, 'Process') for s in order]
     pages += [parse('direction', 'Direction'), parse('resume', 'Resume')]
     os.makedirs(os.path.join(OUT, 's'), exist_ok=True)
-    for f in os.listdir(os.path.join(OUT, 's')): os.remove(os.path.join(OUT, 's', f))
-    imgs = [it for p in pages for s in p['secs'] for it in s['items'] if it['k'] == 'i']
-    for n in range(0, len(imgs), PER):
-        chunk = imgs[n:n + PER]; rows = (len(chunk) + COLS - 1) // COLS
-        sheet = Image.new('RGB', (COLS * CELL, rows * CELL), '#0c0c0d')
-        for i, it in enumerate(chunk):
-            im = Image.open(it.pop('f')).convert('RGB'); im.thumbnail((CELL, CELL))
-            sheet.paste(im, ((i % COLS) * CELL + (CELL - im.width) // 2, (i // COLS) * CELL + (CELL - im.height) // 2))
-            it['s'] = [f'{STAMP}-{n // PER}', i % COLS, i // COLS, rows]
-        sheet.save(os.path.join(OUT, 's', f'{STAMP}-{n // PER}.jpg'), quality=74)
+    before = set(os.listdir(os.path.join(OUT, 's'))); now = set(); nimg = 0
+    # one or more sheets per page, named by what they hold, so an unchanged page keeps its sheets between runs
+    for p in pages:
+        imgs = [it for s in p['secs'] for it in s['items'] if it['k'] == 'i']; nimg += len(imgs)
+        for n in range(0, len(imgs), PER):
+            chunk = imgs[n:n + PER]; rows = (len(chunk) + COLS - 1) // COLS
+            name = hashlib.md5(('|'.join(it['id'] + str(os.path.getmtime(it['f'])) for it in chunk)).encode()).hexdigest()[:12]
+            now.add(name + '.jpg'); path = os.path.join(OUT, 's', name + '.jpg')
+            sheet = None if os.path.exists(path) else Image.new('RGB', (COLS * CELL, rows * CELL), '#0c0c0d')
+            for i, it in enumerate(chunk):
+                f = it.pop('f'); it['s'] = [name, i % COLS, i // COLS, rows]
+                if sheet is None: continue
+                im = Image.open(f).convert('RGB'); im.thumbnail((CELL, CELL))
+                sheet.paste(im, ((i % COLS) * CELL + (CELL - im.width) // 2, (i // COLS) * CELL + (CELL - im.height) // 2))
+            if sheet is not None: sheet.save(path, quality=74)
+    for f in before - now: os.remove(os.path.join(OUT, 's', f))
+    delta = {'s/' + f: 's/' + f for f in sorted(now - before)}; delta.update({'s/' + f: None for f in sorted(before - now)}); delta['data.json'] = 'data.json'
+    json.dump(delta, open(os.path.join(OUT, 'delta.json'), 'w'))
+    imgs = [0] * nimg
     json.dump({'cols': COLS, 'pages': pages}, open(os.path.join(OUT, 'data.json'), 'w'), separators=(',', ':'))
-    print('pages', len(pages), 'images', len(imgs), 'text', sum(1 for p in pages for s in p['secs'] for it in s['items'] if it['k'] == 't'), 'sheets', (len(imgs) + PER - 1) // PER)
+    print('pages', len(pages), 'images', len(imgs), 'text', sum(1 for p in pages for s in p['secs'] for it in s['items'] if it['k'] == 't'), 'sheets', len(now), 'new', len(now - before))
 
 main()
