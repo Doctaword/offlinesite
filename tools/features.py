@@ -272,7 +272,7 @@ def main():
         imgs = sized(imgs, size_of)
         if k == 'redlines' and imgs: dcover = imgs[0]
         body += f"<section id='{k}'><h2>{esc(t)}</h2>{gallery(imgs)}</section>"
-    page(os.path.join(OUT, 'direction', 'index.html'), 'Art direction', body, depth=1, active='Art direction')
+    page(os.path.join(OUT, 'direction', 'index.html'), 'Art direction', body, depth=1, active='Direction')
     Image.open(os.path.join(OUT, dcover['thumb'].replace('../', ''))).save(os.path.join(OUT, 'direction', 'cover.webp'))
 
     # resume
