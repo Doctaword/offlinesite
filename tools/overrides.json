@@ -19,11 +19,27 @@
    "mv": {}
   },
   "cyclops-hellfire-gala": {
-   "del": [],
+   "del": [
+    "03640518b75f",
+    "0f74c8dda123",
+    "2c8c7310b090",
+    "51999e048891",
+    "534cd6917c84",
+    "6952853260ec",
+    "69ff24adc50e",
+    "a499ae46092e",
+    "b6ce4fdd70a6",
+    "b9e2ee88fa23",
+    "d09b5bb9ff8e"
+   ],
    "mv": {
     "9790f75a6c65": "sketch",
     "b7535602ee3e": "sketch",
-    "c30fe77c0a95": "sketch"
+    "c30fe77c0a95": "sketch",
+    "0d615f2f0133": "final",
+    "586d55629f11": "flats",
+    "b16a814f4871": "sketch",
+    "eae2e69c525c": "flats"
    }
   },
   "daken-pride": {
