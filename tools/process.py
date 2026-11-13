@@ -122,7 +122,7 @@ def main():
             if os.path.join(dp, fn) not in keep: os.remove(os.path.join(dp, fn))
     size_of = {j[1]: s for j, s in zip(jobs, sizes)}
     index_cards = []
-    PERSONAL = [('spinefall-gate', 'Spinefall Gate'), ('war-cry', 'War Cry')]   # pages built by features.py
+    PERSONAL = [('spinefall-gate', 'Spinefall Gate'), ('war-cry', 'War Cry'), ('circles-of-sin', 'Circles of Sin')]   # pages built by features.py
     for c in chars:
         sections = []; total = 0; cover = None
         for key, title, blurb in STAGES:

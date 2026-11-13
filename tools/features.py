@@ -139,9 +139,9 @@ def comps():
 
 # ---------------------------------------------------------------- personal pieces with their working files
 def personal():
-    base = os.path.join(UP, 'WB sketches')
+    base = UP
     PAGES = [
-      ('spinefall-gate', 'Spinefall Gate', 'Personal worldbuilding project.', 'finalcompfinalv2.png', [
+      ('spinefall-gate', 'Spinefall Gate', 'Personal worldbuilding project.', 'finalcompfinalv2.png', 'WB sketches/', [
         ('Shape sketches', [('1.png', ''), ('1.1.png', ''), ('wk2.1.png', ''), ('1.1pres.png', 'Chosen silhouettes')]),
         ('Thumbnails', [('0pres.png', ''), ('comps.png', '')]),
         ('3D block-in', [('week3/week3front34.png', ''), ('week3/week3back34.png', ''), ('week3/week3interiorfront.png', ''), ('week3/week3interiorback.png', ''), ('week5/shoebox.png', 'Paintover tests')]),
@@ -152,20 +152,26 @@ def personal():
         ('Key frame: beyond the gate', [('finalcompwip.png', 'Value rough'), ('finalcomp.png', ''), ('finalcompfinal.png', 'Final values'), ('finalcomp2.png', 'Color pass'), ('finalcompfinalv2.png', 'Final')]),
         ('Presentation', [(f'final presentation/JPEG/Hell_Vis_Dev_Final_v4-{n}.jpg', '') for n in range(1, 10)]),
       ]),
-      ('war-cry', 'War Cry', 'Personal illustration.', 'warcry/warcry-nightfallmaster.png', [
+      ('war-cry', 'War Cry', 'Personal illustration.', 'warcry/warcry-nightfallmaster.png', 'WB sketches/', [
         ('Sketch', [('warcry/warcrywip00.png', '')]),
         ('Values', [('warcry/warcrywip01.png', ''), ('warcry/warcrywip03.png', ''), ('warcry/warcrywip05.png', ''), ('warcry/warcrywip08.png', ''), ('warcry/warcrywip09.png', '')]),
         ('Color', [('warcry/warcrywip09-3.png', ''), ('warcry/warcrywip09-5.png', ''), ('warcry/warcrywip09-6.png', '')]),
         ('Final', [('warcry/warcry-nightfallmaster.png', '')]),
       ]),
+      ('circles-of-sin', 'Circles of Sin', 'Personal character design.', 'wrath/wrath.png', 'trevino/', [
+        ('Sketches', [(f'{d}AmdrewTran_Week1_{n}_sketch.png', n) for d, n in (('', 'Pride'), ('', 'Greed'), ('', 'Lust'), ('envy/', 'Envy'), ('', 'Gluttony'), ('wrath/', 'Wrath'), ('sloth/', 'Sloth'))]),
+        ('Envy', [('envy/envywip.png', 'Values'), ('envy/envy page.png', 'Painted')]),
+        ('Sloth', [('sloth/slothpagewip.png', ''), ('sloth/slothpage.png', 'Painted'), ('sloth/1.png', ''), ('sloth/2.png', ''), ('sloth/3.png', ''), ('sloth/4.png', '')]),
+        ('Wrath', [('wrath/wrath.png', 'Painted'), ('534215.webp', 'Final')]),
+      ]),
     ]
     out = []
-    for slug, title, note, cover, secs in PAGES:
+    for slug, title, note, cover, pre, secs in PAGES:
         built = []; cov = None
         for t, files in secs:
             imgs = []
             for fn, c in files:
-                src = os.path.join(base, fn)
+                src = os.path.join(base, pre + fn)
                 if not os.path.exists(src): continue
                 i = staged(src, 'personal', '../../'); i['cap'] = c; imgs.append(i)
                 if fn == cover: cov = i
