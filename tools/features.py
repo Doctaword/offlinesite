@@ -194,7 +194,6 @@ def main():
         body += f"<section id='{slug}'><h2>{esc(title)}</h2><p class='note'>{esc(credit)}</p>"
         if slug == 'marvel-puzzle-quest': body += "<nav class='jump tight'><a href='../process/'>Process</a></nav>"
         body += gallery(imgs)
-        for y in yt: body += f"<nav class='jump tight'><a href='https://www.youtube.com/watch?v={y}'>Trailer <span>needs internet</span></a></nav>"
         body += "</section>"
     page(os.path.join(OUT, 'professional', 'index.html'), 'Professional work', body, depth=1, active='Professional')
     open(os.path.join(OUT, 'index.html'), 'w').write("<!doctype html><meta charset='utf-8'><title>Andrew Dat Tran</title>"
