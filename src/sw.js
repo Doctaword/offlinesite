@@ -98,6 +98,9 @@ async function handle(request) {
   if (url.href.startsWith(BASE)) {
     let rel = url.pathname.slice(new URL(BASE).pathname.length);
     if (request.mode === 'navigate' || rel === '' || rel.endsWith('/')) {
+      // A folder address typed without its last slash must be redirected, as a web server does: otherwise the page's own
+      // relative links (and the features version's jump to site/) resolve one level too high.
+      if (rel !== '' && !rel.endsWith('/') && !/\.[a-z0-9]+$/i.test(rel)) return Response.redirect(BASE + rel + '/' + url.search, 301);
       rel = rel.replace(/\/?$/, '/').replace(/^\/$/, '');
       if (m.pages.includes(rel.replace(/\/$/, ''))) return fromCache(BASE + rel, 'text/html; charset=utf-8', request);
       // A page this saved copy does not know yet (the site was updated since it was saved): take it from the internet

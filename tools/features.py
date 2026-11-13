@@ -196,7 +196,8 @@ def main():
         for y in yt: body += f"<nav class='jump tight'><a href='https://www.youtube.com/watch?v={y}'>Watch the trailer on YouTube <span>needs internet</span></a></nav>"
         body += "</section>"
     page(os.path.join(OUT, 'professional', 'index.html'), 'Professional work', body, depth=1, active='Professional')
-    open(os.path.join(OUT, 'index.html'), 'w').write("<!doctype html><meta charset='utf-8'><meta http-equiv='refresh' content='0;url=site/'><title>Andrew Dat Tran</title><a href='site/'>Open</a>")
+    open(os.path.join(OUT, 'index.html'), 'w').write("<!doctype html><meta charset='utf-8'><title>Andrew Dat Tran</title>"
+        "<script>location.replace(location.pathname.replace(/\\/?(index\\.html)?$/, '/') + 'site/')</script><noscript><a href='site/'>Open</a></noscript>")
 
     # color comps
     body = ("<p class='crumb'><a href='../'>Process</a></p><h1>Color comps for animation backgrounds</h1>"
