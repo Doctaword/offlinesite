@@ -24,7 +24,7 @@ NAMES = {'BladeClassic': 'Blade (Classic)', 'Cyclops Hellfire Gala': 'Cyclops (H
   'drax classic': 'Drax (Classic)', 'elektra': 'Elektra', 'hoodedmanwolverine': 'Wolverine (Hooded Man)', 'infamous ironman': 'Doctor Doom (Infamous Iron Man)',
   'mariahillbaronesthor': 'Maria Hill, Baron Zemo and Thor', 'monica': 'Monica Rambeau', 'prowler': 'Prowler', 'psylocke': 'Psylocke', 'silk': 'Silk', 'spiderham 2099': 'Spider-Ham 2099',
   'thing': 'The Thing', 'yellow_jacket': 'Yellowjacket'}
-SKIP_DIRS = {'Templates', '_loose'}
+SKIP_DIRS = {'Templates', '_loose', 'psylocke'}   # psylocke: removed at Andrew's request
 STAGES = [('ref', 'References', ''),
           ('sketch', 'Sketches and thumbnails', 'Pose and composition options sent for a first pick.'),
           ('line', 'Clean line', 'The chosen poses tightened up for approval before color.'),
