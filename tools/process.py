@@ -25,7 +25,8 @@ NAMES = {'BladeClassic': 'Blade (Classic)', 'Cyclops Hellfire Gala': 'Cyclops (H
   'mariahillbaronesthor': 'Maria Hill, Baron Zemo and Thor', 'monica': 'Monica Rambeau', 'prowler': 'Prowler', 'psylocke': 'Psylocke', 'silk': 'Silk', 'spiderham 2099': 'Spider-Ham 2099',
   'thing': 'The Thing', 'yellow_jacket': 'Yellowjacket'}
 SKIP_DIRS = {'Templates', '_loose'}
-STAGES = [('sketch', 'Sketches and thumbnails', 'Pose and composition options sent for a first pick.'),
+STAGES = [('ref', 'References', ''),
+          ('sketch', 'Sketches and thumbnails', 'Pose and composition options sent for a first pick.'),
           ('line', 'Clean line', 'The chosen poses tightened up for approval before color.'),
           ('flats', 'Color flats', 'Local color and costume read, checked against the character model.'),
           ('render', 'Progress rounds', 'Each numbered version is a round sent for review, from rough to finished render.'),
@@ -40,8 +41,10 @@ def classify(name, rel):
     n = name.lower(); low = '/' + rel.lower().replace('\\', '/')
     dated = re.match(r'(\d{4})-(\d{2})-\d{2}_', n)
     # Andrew joined the project in May 2022: anything older is existing game art he was matching, not his work
-    if dated and (int(dated.group(1)), int(dated.group(2))) < (2022, 5): return 'ref'
-    if re.search(r'/og/|/ref[^/]*/|/poses?/|/mpq shots/|/reference', low): return 'ref'
+    # 'base' = existing game art used as a pose base (never shown); 'ref' = comic and photo reference Andrew gathered (shown)
+    if re.search(r'/og/|/poses?/|/mpq shots/', low): return 'base'
+    if re.search(r'/ref[^/]*/|/[^/]*ref/|/reference', low): return 'ref'
+    if dated and (int(dated.group(1)), int(dated.group(2))) < (2022, 5): return 'base'   # older than his start date: existing game art
     if re.search(r'refs|rejected|_comic-', n): return 'ref'   # reference boards, a comic panel, comic covers
     if re.search(r'feedback|notat|notes|paintover|redline|drawover', n): return 'notes'
     if re.search(r'(^|[-_])refs?([-_.]|\d|$)|reference|screenshot', n): return 'ref'
@@ -100,7 +103,7 @@ def main():
                 if os.path.getsize(src) < 3000: continue
                 key = digest[:12]; lab, date = label(fn)
                 stage = classify(fn, rel)
-                if stage == 'ref': continue   # reference, pose bases and existing game art are not shown: only work drawn from scratch
+                if stage == 'base': continue   # existing game art used as a pose base is not shown
                 items.append({'stage': stage, 'label': lab, 'date': date, 'sort': fn.lower(), 'key': key, 'src': src})
                 jobs.append((src, os.path.join(OUT, 'img', cslug, key + '.webp'), 2200, 85))
                 jobs.append((src, os.path.join(OUT, 'img', cslug, key + '_t.webp'), 560, 78))
@@ -133,7 +136,7 @@ def main():
             body += f"<section id='s{n}'><h2>{esc(t)}</h2>{gallery(im, t)}</section>"
         page(os.path.join(OUT, c['slug'], 'index.html'), c['name'] + ' process', body, depth=2, active='Process')
         index_cards.append((c['name'], c['slug'], cover.replace('../', ''), total, [t for t, _, _ in sections]))
-    index_cards.sort(key=lambda c: (c[1] != 'doctor-doom-infamous-iron-man', -len(c[4]), -c[3]))   # Doctor Doom first (pose and thumbnail options), then the most complete stories
+    index_cards.sort(key=lambda c: ('Feedback and notes' not in c[4], c[1] != 'doctor-doom-infamous-iron-man', -len(c[4]), -c[3]))   # redlined characters on top, then   # Doctor Doom first (pose and thumbnail options), then the most complete stories
     body = "<h1>Process</h1><p class='note'>Marvel Puzzle Quest. Broken Circle Studios, 505 Games, Marvel. Art direction: Amber Ansdell.</p><div class='cards'>" \
            "<a class='card' href='comps/'><img loading='lazy' src='cover-comps.webp' alt=''><b>Color comps for animation backgrounds</b></a>"
     for name, s, cover, total, stages in index_cards:
