@@ -100,7 +100,12 @@ async function handle(request) {
     if (request.mode === 'navigate' || rel === '' || rel.endsWith('/')) {
       rel = rel.replace(/\/?$/, '/').replace(/^\/$/, '');
       if (m.pages.includes(rel.replace(/\/$/, ''))) return fromCache(BASE + rel, 'text/html; charset=utf-8', request);
-      // unknown page: go home rather than show an error
+      // A page this saved copy does not know yet (the site was updated since it was saved): take it from the internet
+      // and forget the old list so the next request reads the new one. Only when that fails, go home rather than show an error.
+      try {
+        const res = await Promise.race([fetch(request), timeout(6000)]);
+        if (res && res.ok) { mapPromise = null; caches.open(CACHE).then(c => c.add(new Request(BASE + 'm/manifest.json', { cache: 'reload' }))).catch(() => {}); return res; }
+      } catch (e) { /* offline */ }
       return fromCache(BASE, 'text/html; charset=utf-8', request);
     }
     const idx = m.fileIndex[rel];
