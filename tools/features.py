@@ -165,6 +165,7 @@ def personal():
         ('Wrath', [('wrath/wrath.png', 'Painted'), ('534215.webp', 'Final')]),
       ]),
       ('halo-asgardian-warrior', 'Halo: Asgardian Warrior', 'Armor concept. Liquid Development for 343 Industries.', 'bodyclean__revisedbodyv2.png', 'halo-aw/', [
+        ('Reference', [('reference.png', '')]),
         ('Sketches', [(f'{n} sketch.png', '') for n in 'ABC'] + [(f'IMG_2021030{n}.png', '') for n in ('2_014425__01', '2_014425__012', '3_004153__01__01', '3_215924__01')]
                      + [(f'PNGs__MCC_Asgardian Warrior sketches Feb 28, 2021-{n}.png', '') for n in (1, 2, 3, 4, 5, 6, 8)]),
         ('Rough', [('2021-03-01 - AsgardianWarrior -Rough.png', ''), ('2021-03-01 - AsgardianWarrior -Roughlineup.png', '')]),
