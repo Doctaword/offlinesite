@@ -501,6 +501,7 @@
     "0f5dc6e67bc0",
     "1c530b78ca7e",
     "2d82e84a9bb6",
+    "481e62eea87c",
     "4d8f15c3d6af",
     "635c1d284490",
     "87d29f63192f",
@@ -510,7 +511,9 @@
     "da7d7f960e9c",
     "ecb1f6a7a09b"
    ],
-   "mv": {}
+   "mv": {
+    "0a6779c3f12f": "helmets-and-shoulders"
+   }
   }
  },
  "covers": {
