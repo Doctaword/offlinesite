@@ -199,7 +199,7 @@ def main():
         "<script>location.replace(location.pathname.replace(/\\/?(index\\.html)?$/, '/') + 'site/')</script><noscript><a href='site/'>Open</a></noscript>")
 
     # color comps
-    body = ("<p class='crumb'><a href='../'>Process</a></p><h1>Color comps for animation backgrounds</h1>"
+    body = ("<p class='crumb'><a href='../'>Process</a></p>"
             "<p class='note'>Background paint at Titmouse.</p>")
     cover = None
     for n, (t, b, imgs) in enumerate(comp_groups):

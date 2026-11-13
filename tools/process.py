@@ -35,6 +35,9 @@ STAGES = [('ref', 'References', ''),
 EXT = ('.png', '.jpg', '.jpeg', '.webp', '.gif', '.avif')
 AI_NAME = re.compile(r'doctaword-.*[0-9a-f]{8}-[0-9a-f]{4}-|chatgpt|midjourney|dall-?e|_elektra_0a07a776', re.I)   # image-generator downloads and unrelated files: never shown
 
+_ov = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'overrides.json')
+OV = json.load(open(_ov)) if os.path.exists(_ov) else {'drop_pages': [], 'process': {}}   # Andrew's marks from the review page
+
 def slug(s): return re.sub(r'[^a-z0-9]+', '-', s.lower()).strip('-')
 
 def classify(name, rel):
@@ -92,6 +95,8 @@ def main():
         full = os.path.join(SRC, folder)
         if not os.path.isdir(full) or folder in SKIP_DIRS: continue
         cslug = slug(NAMES.get(folder, folder)); items = []; seen = set()
+        if cslug in OV['drop_pages']: continue
+        ov = OV['process'].get(cslug, {'del': [], 'mv': {}})
         for dp, _, fns in os.walk(full):
             for fn in sorted(fns):
                 if not fn.lower().endswith(EXT): continue
@@ -103,6 +108,8 @@ def main():
                 if os.path.getsize(src) < 3000: continue
                 key = digest[:12]; lab, date = label(fn)
                 stage = classify(fn, rel)
+                if key in ov['del']: continue
+                stage = ov['mv'].get(key, stage)
                 if stage == 'base': continue   # existing game art used as a pose base is not shown
                 items.append({'stage': stage, 'label': lab, 'date': date, 'sort': fn.lower(), 'key': key, 'src': src})
                 jobs.append((src, os.path.join(OUT, 'img', cslug, key + '.webp'), 2200, 85))

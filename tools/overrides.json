@@ -1,0 +1,341 @@
+{
+ "drop_pages": [
+  "drax-classic",
+  "the-thing",
+  "yellowjacket"
+ ],
+ "process": {
+  "blade-classic": {
+   "del": [
+    "2ae65e6c5791",
+    "3f4bf5aa6a6e",
+    "40988309a381",
+    "43e95df4124a",
+    "51c10c4dbd19",
+    "d8eca05e48c2",
+    "db7c27075f76",
+    "defa6e13d093"
+   ],
+   "mv": {}
+  },
+  "cyclops-hellfire-gala": {
+   "del": [],
+   "mv": {
+    "9790f75a6c65": "sketch",
+    "b7535602ee3e": "sketch",
+    "c30fe77c0a95": "sketch"
+   }
+  },
+  "daken-pride": {
+   "del": [
+    "e254956c6f42"
+   ],
+   "mv": {}
+  },
+  "doctor-doom-infamous-iron-man": {
+   "del": [
+    "c3876af05a4a",
+    "e7284d9b69dc"
+   ],
+   "mv": {
+    "d7b0289ab115": "sketch"
+   }
+  },
+  "drax-classic": {
+   "del": [
+    "19f850b717ef",
+    "74d6c2326ebc",
+    "a04b2bae8423",
+    "b85bf0ea850f",
+    "d58c4cb52dd7",
+    "f663ce056c3b"
+   ],
+   "mv": {}
+  },
+  "elektra": {
+   "del": [
+    "04f74d86782e",
+    "4c5031571d71",
+    "532c969e0183",
+    "69b725388f66",
+    "6e086fc7c253",
+    "d218c621f79f"
+   ],
+   "mv": {}
+  },
+  "event-and-store-art-doctor-doom-s-h-i-e-l-d-training": {
+   "del": [
+    "f7260c01004a"
+   ],
+   "mv": {}
+  },
+  "howard-the-duck": {
+   "del": [
+    "04cb0ff0f3cd",
+    "06df895db29c",
+    "10051a1c5d62",
+    "1142d82421a7",
+    "1d5746ab419b",
+    "2a4c2698e882",
+    "86f0cff246e8",
+    "9cf9872f9ff9",
+    "b141b6809448",
+    "c4fd10ea49eb",
+    "d70664712f3a",
+    "d9be90bd7ed3"
+   ],
+   "mv": {}
+  },
+  "karolina-dean": {
+   "del": [
+    "1223e3e28cc2",
+    "1d07e3cd4ec7",
+    "4d8a78d1615a",
+    "7a266e33aab3",
+    "90424e4d899b",
+    "a41a431d5ab5",
+    "d276038bc238"
+   ],
+   "mv": {}
+  },
+  "man-ant": {
+   "del": [
+    "5413fac5c47c",
+    "6cfa8ef3112d",
+    "7e40201dde50",
+    "93a2a570ffd3"
+   ],
+   "mv": {}
+  },
+  "mantis-rocket-and-groot": {
+   "del": [
+    "06bab9635d8b",
+    "17ae82e90d90",
+    "2276647bf76f",
+    "242ebb0b249c",
+    "27ecb9f91f77",
+    "2989332ad9ea",
+    "3bddd0cb41b2",
+    "42022d59f1ee",
+    "494f175814b8",
+    "6b6db529a787",
+    "6bff98bc7631",
+    "721185f6b4d7",
+    "89e3c8a8225a",
+    "90eed485de23",
+    "9162f22709fc",
+    "945c5f34a088",
+    "a88ad7833b81",
+    "bc3710f9ec68",
+    "bfa7066711f2",
+    "dae2cb180c5f",
+    "tc2f18a4272"
+   ],
+   "mv": {}
+  },
+  "maria-hill-baron-zemo-and-thor": {
+   "del": [
+    "66b50856da0c",
+    "6ed5288f4f88",
+    "7063c011802e",
+    "bd265983f9af",
+    "be85c0bd1249",
+    "d7233770404d"
+   ],
+   "mv": {}
+  },
+  "monica-rambeau": {
+   "del": [
+    "00de1e573b6c",
+    "089d84213a7c",
+    "0c81fad785a7",
+    "1564fe4d2941",
+    "1f2b5046b1b8",
+    "23e2aa6435e2",
+    "25f1d7bffc7c",
+    "33e6963fbe25",
+    "3b07924cb01a",
+    "4a381d8d2c6f",
+    "51fa4d87e289",
+    "64f3368dea21",
+    "6c47eb3b838b",
+    "7f49475fba4a",
+    "884cb5a32173",
+    "9f42e22ba1bf",
+    "a17c401b4483",
+    "a6f19a62414b",
+    "ab2ba2e48a37",
+    "b30b3ca46c70",
+    "b48a9c770f2d",
+    "bd439ae81c21",
+    "c0e9318875bb",
+    "c164dbdac977",
+    "c2cf164afac7",
+    "cc650e1a78e0",
+    "d08fb5e04ee2",
+    "d94c013e4a6a",
+    "eb15c02bb32f",
+    "f31573cd264b",
+    "f6753c4aa575",
+    "f7347a0a4708"
+   ],
+   "mv": {}
+  },
+  "moon-knight": {
+   "del": [
+    "4159dcdf0fe8",
+    "66fd1b27777f"
+   ],
+   "mv": {}
+  },
+  "namora": {
+   "del": [
+    "0779f0c471d8",
+    "20ce1ca8a7d4",
+    "22b7633235a9",
+    "e37d6e741c94",
+    "fbbbf711c0cf"
+   ],
+   "mv": {
+    "835095ecbb67": "sketch",
+    "a0505c71f5a2": "ref"
+   }
+  },
+  "nightcrawler": {
+   "del": [
+    "9f10744e575d"
+   ],
+   "mv": {}
+  },
+  "omega-red": {
+   "del": [
+    "bf66700964b6",
+    "ec6d0d670055"
+   ],
+   "mv": {}
+  },
+  "prowler": {
+   "del": [
+    "8926cde01272",
+    "a7f63133e402"
+   ],
+   "mv": {}
+  },
+  "psylocke": {
+   "del": [
+    "166cdda3fc9f",
+    "2db35b995b31"
+   ],
+   "mv": {}
+  },
+  "silk": {
+   "del": [
+    "4c0e72c4a761"
+   ],
+   "mv": {}
+  },
+  "spider-ham-2099": {
+   "del": [
+    "4ea706134f20",
+    "7316db3bd7da",
+    "bd43398a7f8b",
+    "c2ab7b9d43eb"
+   ],
+   "mv": {}
+  },
+  "spider-ham": {
+   "del": [
+    "0af2f1da64a3",
+    "d5531c4292d8"
+   ],
+   "mv": {}
+  },
+  "spider-man-hornet": {
+   "del": [
+    "3a05f98b1c74",
+    "3d6e02a5c2b1",
+    "51b602812e74",
+    "51e732fdd538",
+    "6f7e4b08153f",
+    "8996eb1f1ffa",
+    "bf9cf1a1646e",
+    "c495e391692a",
+    "e6693c923040"
+   ],
+   "mv": {
+    "e4e43dab289a": "sketch"
+   }
+  },
+  "sunspot": {
+   "del": [
+    "0e55572c1174"
+   ],
+   "mv": {}
+  },
+  "the-thing": {
+   "del": [
+    "c04ccbbeb4de"
+   ],
+   "mv": {}
+  },
+  "wolverine-hooded-man": {
+   "del": [
+    "3b88f3773b7f",
+    "3c6654fec1c8",
+    "3d55a7805314",
+    "6fcb5a1029ab",
+    "716a9c5fa0a1",
+    "77df3ff0bddf",
+    "8056b9cca0bd",
+    "8b930e4fc69e",
+    "a80702383607",
+    "ac12d3a36ed8",
+    "b5b8b670bb40",
+    "b763d7b935c1",
+    "b79ec810a7f8",
+    "c721fcf5ef3a",
+    "dbecadd58d54",
+    "ebdfbb7b78bc"
+   ],
+   "mv": {}
+  },
+  "yelena-belova-thunderbolts": {
+   "del": [
+    "084ae7907d4d",
+    "1e7136c43d29",
+    "255c5ced0ccc",
+    "2b2c3f779708",
+    "4a90b3383d32",
+    "5ddf79035e75",
+    "62ab2d2dbd54",
+    "68cf7da36f5f",
+    "6b70e2826d38",
+    "95ae45df7d31",
+    "b36d5ca56883",
+    "e1e7aa4b9f45"
+   ],
+   "mv": {}
+  },
+  "yellowjacket": {
+   "del": [
+    "45d44d8088dd"
+   ],
+   "mv": {}
+  }
+ },
+ "other": {
+  "process.comps": {
+   "del": [
+    "ta0bdb3d928"
+   ],
+   "mv": {}
+  },
+  "resume": {
+   "del": [
+    "9fad9538abef2e48",
+    "t02f3aef6a2"
+   ],
+   "mv": {}
+  }
+ }
+}

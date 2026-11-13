@@ -52,5 +52,5 @@ def resume_body(img, gallery):
     b += ("<h2>Education</h2><p>Laguna College of Art + Design. BFA, Entertainment Design. Summa cum laude.</p>"
           "<h2>Tools</h2><p>Adobe Photoshop, Procreate, Adobe Illustrator, Blender, Daz3D, ZBrush, Unreal Engine, Adobe Substance 3D Modeler, Adobe Substance 3D Stager.</p>"
           "<h2>Interests</h2><p>Magic: The Gathering. Legends of Runeterra (Top 200 in 2022). VR sculpting. Traditional painting and printmaking. NBA and fantasy basketball.</p>"
-          "<h2>Original resume</h2>" + gallery([dict(img, cap='Resume, one page')]) + "</div>")
+          "</div>")
     return b
