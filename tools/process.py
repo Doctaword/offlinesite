@@ -145,6 +145,8 @@ def main():
     page(os.path.join(OUT, 'index.html'), 'Process', body, depth=1, active='Process')
     Image.open(os.path.join(OUT, index_cards[0][2])).save(os.path.join(OUT, 'cover.webp'))
     import shutil
+    for d in os.listdir(OUT):   # pages of characters no longer included
+        if os.path.isdir(os.path.join(OUT, d)) and d not in {c[1] for c in index_cards} | {'img', 'comps'}: shutil.rmtree(os.path.join(OUT, d))
     for d in os.listdir(os.path.join(OUT, 'img')):
         if d not in {c[1] for c in index_cards}: shutil.rmtree(os.path.join(OUT, 'img', d))
     json.dump({'characters': [(n, s, t) for n, s, _, t, _ in index_cards], 'left_out_generated': skipped_ai}, open(os.path.join(OUT, 'summary.json'), 'w'), indent=1)
