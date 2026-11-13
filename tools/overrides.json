@@ -106,7 +106,9 @@
     "b141b6809448",
     "c4fd10ea49eb",
     "d70664712f3a",
-    "d9be90bd7ed3"
+    "d9be90bd7ed3",
+    "f76f5c9d1e0f",
+    "t5c48172a32"
    ],
    "mv": {}
   },
@@ -159,6 +161,8 @@
   },
   "maria-hill-baron-zemo-and-thor": {
    "del": [
+    "47bcf4e223a1",
+    "4fffd685a23c",
     "66b50856da0c",
     "6ed5288f4f88",
     "7063c011802e",
@@ -166,7 +170,12 @@
     "be85c0bd1249",
     "d7233770404d"
    ],
-   "mv": {}
+   "mv": {
+    "0b1dc3a28e5b": "final",
+    "5b52aa92d8a3": "final",
+    "5df15ac54eec": "final",
+    "74402210eda9": "final"
+   }
   },
   "monica-rambeau": {
    "del": [
@@ -254,7 +263,9 @@
   },
   "silk": {
    "del": [
-    "4c0e72c4a761"
+    "4abf055d6a6d",
+    "4c0e72c4a761",
+    "505d7a774869"
    ],
    "mv": {}
   },

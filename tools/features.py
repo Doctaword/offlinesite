@@ -99,40 +99,42 @@ def professional():
 # ---------------------------------------------------------------- animation color comps (Titmouse)
 def comps():
     base = os.path.join(UP, 'ART/99_Archive/Duplicates/TITMOUSE DRIVE')
-    files = []
+    seen = {}
     for dp, _, fns in os.walk(base):
-        for fn in fns:
-            if re.search(r'_(AT|ADT)_', fn): files.append(os.path.join(dp, fn))
-    seen = {}; uniq = []
-    for f in sorted(files, key=lambda f: os.path.basename(f)):
-        k = (os.path.basename(f))
-        if k in seen: continue
-        seen[k] = 1; uniq.append(f)
+        for fn in sorted(fns):
+            if fn.lower().endswith('.png'): seen.setdefault(fn, os.path.join(dp, fn))
+    BRIEF = 'Brief: storyboard and color key'
+    # (title, [(file name pattern, caption or None for the automatic one)]) in the order the work happened
     GROUPS = [
-      ('A291|A318|A288', 'Pantheon: night road, three lighting options', 'One layout painted with neutral, red and yellow light so the art director could pick the mood for the sequence.'),
-      ('A065|A066|A067', 'Pantheon: sporting goods store, rough to clean', 'Color roughs first, then clean paint, with a second version after notes on each shot.'),
-      ('A558', 'Pantheon: headquarters gates, option A and B', 'Two value and saturation reads of the same down shot.'),
-      ('A257', 'Pantheon: server farm, option A, option B and the approved version', 'Cool and warm passes presented side by side, followed by the version with lights on.'),
-      ('A262', 'Pantheon: office, lights off and on', 'Two lighting states for the same room.'),
-      ('A231', 'Pantheon: D.C. street pan', 'Long pan background.'),
-      ('A639', 'Pantheon: Utopia city, day and blast lighting', 'The same city painted for daylight and for the explosion.'),
-      ('A115', 'Digman!: gala ballroom, lighting pass', 'Version 3 and the alternate with the practical lights switched off.'),
+      ('Pantheon: Chanda tower balcony, brief to final', [(r'^FOR ANDREW \(4\)', BRIEF), (r'_A159_.*ROUGH', None), (r'^chandatower_notes', 'Notes on the rough'), (r'_A153_.*CLEAN', None)]),
+      ('Pantheon: headquarters gates at night', [(r'^FOR ANDREW1', BRIEF), (r'^FOR ANDREW4', BRIEF), (r'_A491_', None), (r'_A558_', None)]),
+      ('Pantheon: sporting goods store, rough to clean', [(r'_A065_.*ROUGH', None), (r'_A065_.*CLEAN', None), (r'_A066_.*ROUGH', None), (r'_A066_.*CLEAN', None),
+                                                          (r'_A067_.*ROUGH', None), (r'_A067_.*CLEAN', None), (r'_A068_', None), (r'_A076_.*ROUGH', None), (r'_A076_.*GUN_CASE_CLEAN', None)]),
+      ('Pantheon: interrogation room', [(r'_A13[356]_.*ROUGH', None), (r'_A134_.*CLEAN', None)]),
+      ("Pantheon: Joey's bedroom", [(r'^For Andrew \(6\)', BRIEF), (r'_A037_', None)]),
+      ("Pantheon: Maddie's dining room", [(r'^FOR ANDREW \(5\)', BRIEF), (r'_A279_INT_MADDIES', None)]),
+      ('Pantheon: night road, three lighting options', [(r'_(A291|A318|A288)_', None)]),
+      ('Pantheon: server farm, option A, option B and the approved version', [(r'_A257_', None)]),
+      ('Pantheon: office, lights off and on', [(r'_A262_', None)]),
+      ('Pantheon: D.C. street pan', [(r'_A231_', None)]),
+      ('Pantheon: Utopia city', [(r'^12341', 'Perspective block-in'), (r'_A025_', None), (r'_A639_', None)]),
+      ('Digman!: gala ballroom, lighting pass', [(r'_A115_', None)]),
     ]
     def cap(fn):
         n = os.path.splitext(fn)[0]
         stage = 'Color rough' if 'ROUGH' in n else ('Clean paint' if 'CLEAN' in n or 'PAINT' in n else 'Color')
-        v = re.search(r'_V0?(\d+)', n); tail = n.split('_V')[-1]
-        opt = re.search(r'_(red|yellow|light|day|A|B|ON)$', n)
-        optn = {'red': 'red light', 'yellow': 'yellow light', 'light': 'blast light', 'day': 'daylight', 'A': 'option A', 'B': 'option B', 'ON': 'lights on'}
+        v = re.search(r'_V0?(\d+)', n, re.I)
+        opt = re.search(r'_(red|yellow|light|day|A|B|ON|boards?)$', n)
+        optn = {'red': 'red light', 'yellow': 'yellow light', 'light': 'blast light', 'day': 'daylight', 'A': 'option A', 'B': 'option B', 'ON': 'lights on', 'boards': 'over the storyboard', 'board': 'over the storyboard'}
         return ', '.join(x for x in (stage, 'version ' + v.group(1) if v else '', optn[opt.group(1)] if opt else '') if x)
     out = []
-    for pat, title, blurb in GROUPS:
-        its = [f for f in uniq if re.search(r'_(' + pat + r')_', os.path.basename(f))]
-        order = lambda f: (re.search(r'A\d{3}', os.path.basename(f)).group(0), 0 if 'ROUGH' in f else 1, os.path.basename(f))
-        imgs = []
-        for f in sorted(its, key=order):
-            i = staged(f, 'comps', '../../'); i['cap'] = cap(os.path.basename(f)); imgs.append(i)
-        out.append((title, blurb, imgs))
+    for title, parts in GROUPS:
+        imgs = []; used = set()
+        for pat, c in parts:
+            for fn in sorted(seen, key=lambda f: (0 if 'board' in f.lower() else 1, f)):
+                if fn in used or not re.search(pat, fn) or not re.search(r'_(AT|ADT)[_.]|ANDREW|Andrew|chandatower|^12341', fn): continue
+                used.add(fn); i = staged(seen[fn], 'comps', '../../'); i['cap'] = c or cap(fn); imgs.append(i)
+        out.append((title, '', imgs))
     return out
 
 # ---------------------------------------------------------------- art direction (LCAD)
@@ -205,7 +207,7 @@ def main():
     for n, (t, b, imgs) in enumerate(comp_groups):
         imgs = sized(imgs, size_of)
         if not imgs: continue
-        if n == 3 or cover is None: cover = imgs[-1]
+        if 'server farm' in t or cover is None: cover = imgs[-1]
         body += f"<section><h2>{esc(t)}</h2>{gallery(imgs)}</section>"
     page(os.path.join(OUT, 'process', 'comps', 'index.html'), 'Color comps', body, depth=2, active='Process')
     Image.open(os.path.join(OUT, cover['thumb'].replace('../../', ''))).save(os.path.join(OUT, 'process', 'cover-comps.webp'))
