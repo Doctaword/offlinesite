@@ -1,3 +1,4 @@
+// rev 2: reinstall so every device re-fetches offline.js
 /* Offline service worker for the mirrored site.
    Every request the page makes (to this site or to Squarespace's servers) is answered
    from the copy saved on the device. Nothing here needs the internet once saving is done. */

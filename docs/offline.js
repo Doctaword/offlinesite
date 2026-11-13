@@ -74,7 +74,7 @@
           var jobs = [], total = 0, got = 0;
           m.pages.forEach(function (p) { var u = BASE + (p ? p + '/' : ''); if (mine(p) && (pagesStale || !have[u])) jobs.push([u, 150000]); });
           ['offline.js', 'manifest.webmanifest', 'icon-180.png', 'icon-512.png'].forEach(function (f) { jobs.push([BASE + f, 20000]); });
-          m.files.forEach(function (f) { var u = BASE + f[0]; if (mine(f[0]) && (!have[u] || pagesStale && /(^|\/)cover[^\/]*$/.test(f[0]))) jobs.push([u, f[2]]);   // cover images keep their names, so refresh them with the pages });
+          m.files.forEach(function (f) { var u = BASE + f[0]; if (mine(f[0]) && (!have[u] || pagesStale && /(^|\/)cover[^\/]*$/.test(f[0]))) jobs.push([u, f[2]]); });
           jobs.forEach(function (j) { total += j[1]; });
           var wanted = {}; wanted[BASE + 'm/manifest.json'] = 1; wanted[BASE] = 1;
           m.pages.forEach(function (p) { wanted[BASE + (p ? p + '/' : '')] = 1; });
