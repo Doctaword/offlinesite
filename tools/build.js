@@ -93,17 +93,34 @@ for (const f of fs.readdirSync(SRC)) fs.copyFileSync(path.join(SRC, f), path.joi
 // A folder there with an index.html becomes (or replaces) a page; every other file is saved for offline too.
 const EXTRA = path.join(ROOT, 'extra');
 const TYPE_BY_EXT = Object.fromEntries(Object.entries(EXT).map(([t, e]) => [e, t])); TYPE_BY_EXT['.pdf'] = 'application/pdf';
+const renamed = [];
 (function walk(dir, rel) {
   if (!fs.existsSync(dir)) return;
   for (const f of fs.readdirSync(dir)) {
     const src = path.join(dir, f), r = rel ? rel + '/' + f : f;
     if (fs.statSync(src).isDirectory()) { walk(src, r); continue; }
     if (f === 'summary.json') continue;
-    fs.mkdirSync(path.join(DOCS, rel), { recursive: true }); fs.copyFileSync(src, path.join(DOCS, r));
+    fs.mkdirSync(path.join(DOCS, rel), { recursive: true });
+    if (/(^|\/)x$/.test(rel) && /\.(css|js)$/.test(f)) {
+      // shared styles and scripts get their content hash in the name: a device only downloads files it does not have yet,
+      // so a changed file must have a new name to reach it
+      const h = require('crypto').createHash('sha1').update(fs.readFileSync(src)).digest('hex').slice(0, 10);
+      const hf = f.replace(/\.(css|js)$/, '.' + h + '.$1'), hr = rel + '/' + hf;
+      fs.copyFileSync(src, path.join(DOCS, hr)); renamed.push([f, hf]);
+      fileIdx[hr] = files.length; files.push([hr, TYPE_BY_EXT[path.extname(f).toLowerCase()] || 'application/octet-stream', fs.statSync(src).size]); version += hr;
+      continue;
+    }
+    fs.copyFileSync(src, path.join(DOCS, r));
     if (f === 'index.html') { if (!pages.includes(rel)) pages.push(rel); version += fs.statSync(src).size + ':'; }
     else { fileIdx[r] = files.length; files.push([r, TYPE_BY_EXT[path.extname(f).toLowerCase()] || 'application/octet-stream', fs.statSync(src).size]); version += r + fs.statSync(src).size; }
   }
 })(EXTRA, '');
+for (const p of pages) {   // point every page at the hashed names
+  const f = path.join(DOCS, p, 'index.html'); if (!renamed.length || !fs.existsSync(f)) continue;
+  let h = fs.readFileSync(f, 'utf8'), h0 = h;
+  for (const [a, b] of renamed) h = h.split('x/' + a).join('x/' + b);
+  if (h !== h0) fs.writeFileSync(f, h);
+}
 fs.writeFileSync(path.join(DOCS, '.nojekyll'), '');
 const crypto = require('crypto');
 const body = { pages, files, urls, blocks };
