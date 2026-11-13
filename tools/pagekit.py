@@ -14,7 +14,7 @@ def page(path, title, body, depth, active=None, extra_head=''):
 <meta name="robots" content="noindex">
 <link rel="manifest" href="{pre}manifest.webmanifest">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="Andrew Tran"><meta name="theme-color" content="#000000">
 <link rel="apple-touch-icon" href="{pre}../icon-180.png"><meta name="ofl-home" content="{pre}site/">
 <link rel="stylesheet" href="{pre}x/site.css">{extra_head}
