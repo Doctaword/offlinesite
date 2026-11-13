@@ -171,9 +171,7 @@ def personal():
         ('Helmets and shoulders', [(f'PNGs__Whiteboard Mar 01, 2021-{n}.png', '') for n in (1, 2)]
                      + [(f'ROUGHS__{n}.png', '') for n in ('odin', 'odinv2', 'valk', 'valkv2', 'antlers', 'longhorn', 'hornsdown', 'spikyshoulder', 'spikev2', 'dragonshoulder', 'dragonshoulderv2', 'wolfclean')]),
         ('First sheet', [('MCC_Asgardian_warrior_master.png', ''), ('MCC_Asgardian_warrior_master_feedback.png', 'Art director feedback')]),
-        ('Revisions', [(f'bodyclean__Whiteboard Mar 15, 2021-{n}.png', '') for n in range(1, 6)] + [(f'scans__Whiteboard Mar 16, 2021-{n}.png', '') for n in range(1, 8)]
-                     + [(f'scans__Whiteboard Mar 17, 2021-{n}.png', '') for n in range(1, 5)] + [(f'scans__Whiteboard Mar 17, 2021 (1)-{n}.png', '') for n in range(1, 9)]
-                     + [('bodyclean__roughcolor.png', ''), ('bodyclean__revisedbody.png', ''), ('bodyclean__revisedbodyv2.png', ''),
+        ('Revisions', [('revision-sketches.png', '')] + [('bodyclean__roughcolor.png', ''), ('bodyclean__revisedbody.png', ''), ('bodyclean__revisedbodyv2.png', ''),
                         ('MCC_Asgardian_warrior_master_03-19-21.png', 'Second sheet'), ('MCC_Asgardian_warrior_master_03-19-21v2.png', ''), ('2021-03-19 - VikingWarrior - Revised WIP.png', '')]),
         ('Shoulder round', [('2021-03-23 - VikingWarrior - Revised.png', ''), ('2021-03-25 - VikingWarrior - Revised Shoulder Feedback.png', 'Art director feedback'),
                      ('2021-03-25 - VikingWarrior - Revised Shoulderhelm.png', ''), ('helmsshoulder032621.png', ''), ('2021-03-30 - VikingWarrior - Revisedshouldershelms.png', 'Final')]),
