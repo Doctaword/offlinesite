@@ -192,6 +192,7 @@
     "1f2b5046b1b8",
     "23e2aa6435e2",
     "25f1d7bffc7c",
+    "2ff42a13ba24",
     "33e6963fbe25",
     "3b07924cb01a",
     "4a381d8d2c6f",
@@ -300,6 +301,8 @@
   "spider-ham": {
    "del": [
     "0af2f1da64a3",
+    "af78b73e2162",
+    "d3701254d8c3",
     "d5531c4292d8"
    ],
    "mv": {}
@@ -365,7 +368,9 @@
     "68cf7da36f5f",
     "6b70e2826d38",
     "95ae45df7d31",
+    "afa90c8f5654",
     "b36d5ca56883",
+    "dba62d2bbfbc",
     "e1e7aa4b9f45"
    ],
    "mv": {}
@@ -373,6 +378,14 @@
   "yellowjacket": {
    "del": [
     "45d44d8088dd"
+   ],
+   "mv": {}
+  },
+  "deadpool-taco-truck": {
+   "del": [
+    "163957b63d01",
+    "66612d447c2a",
+    "bd416c096846"
    ],
    "mv": {}
   }
@@ -449,14 +462,15 @@
   "cyclops-hellfire-gala": "0522c167f0cd"
  },
  "card_order": [
-  "comps",
-  "daken-pride",
-  "cyclops-hellfire-gala",
-  "spider-man-hornet",
   "doctor-doom-infamous-iron-man",
+  "cyclops-hellfire-gala",
+  "spider-man-anti-ock-suit",
+  "comps",
+  "spinefall-gate",
+  "daken-pride",
+  "spider-man-hornet",
   "prowler",
   "man-ant",
-  "spider-man-anti-ock-suit",
   "nightcrawler",
   "namora",
   "elektra",
@@ -476,7 +490,6 @@
   "omega-red",
   "mantis-rocket-and-groot",
   "event-and-store-art-doctor-doom-s-h-i-e-l-d-training",
-  "spinefall-gate",
   "circles-of-sin",
   "war-cry"
  ]
