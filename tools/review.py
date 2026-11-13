@@ -63,7 +63,7 @@ def main():
         imgs = [it for s in p['secs'] for it in s['items'] if it['k'] == 'i']; nimg += len(imgs)
         for n in range(0, len(imgs), PER):
             chunk = imgs[n:n + PER]; rows = (len(chunk) + COLS - 1) // COLS
-            name = hashlib.md5(('|'.join(it['id'] + str(os.path.getmtime(it['f'])) for it in chunk)).encode()).hexdigest()[:12]
+            name = hashlib.md5(('|'.join(it['id'] + str(os.path.getsize(it['f'])) for it in chunk)).encode()).hexdigest()[:12]
             now.add(name + '.jpg'); path = os.path.join(OUT, 's', name + '.jpg')
             sheet = None if os.path.exists(path) else Image.new('RGB', (COLS * CELL, rows * CELL), '#0c0c0d')
             for i, it in enumerate(chunk):
