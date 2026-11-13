@@ -7,3 +7,5 @@
 #fx-bar a.on,#fx-bar a:active{color:#000;background:#f5c451;border-color:#f5c451}
 body{padding-top:var(--fxh)!important}
 #header,.header{top:var(--fxh)!important}
+/* narrower side margins than the live site, so the work fills an iPad screen */
+:root,body{--pagePadding:3vw!important;--sqs-site-gutter:3vw!important}
