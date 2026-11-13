@@ -1,9 +1,9 @@
 /* Top bar added to the copies of the original pages in the features version. */
-:root{--fxh:calc(50px + env(safe-area-inset-top))}
+:root{--fxh:calc(60px + env(safe-area-inset-top))}
 #fx-bar{position:fixed;top:0;left:0;right:0;z-index:2147482000;height:var(--fxh);padding:env(safe-area-inset-top) max(12px,env(safe-area-inset-right)) 0 max(12px,env(safe-area-inset-left));
-  display:flex;align-items:center;justify-content:center;gap:4px;background:rgba(0,0,0,.9);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #262626;
-  font:400 15px/1 -apple-system,system-ui,sans-serif;overflow-x:auto;white-space:nowrap}
-#fx-bar a{color:#a3a3a3;text-decoration:none;padding:11px 15px;border-radius:999px;-webkit-tap-highlight-color:transparent}
-#fx-bar a.on,#fx-bar a:active{color:#fff;background:#1c1c1c}
+  display:flex;align-items:center;justify-content:center;gap:8px;background:#0b0b0b;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid #3a3a3a;
+  font:600 16px/1 -apple-system,system-ui,sans-serif;overflow-x:auto;white-space:nowrap}
+#fx-bar a{color:#f4f4f4;text-decoration:none;padding:12px 18px;border-radius:999px;border:1px solid #444;-webkit-tap-highlight-color:transparent}
+#fx-bar a.on,#fx-bar a:active{color:#000;background:#f5c451;border-color:#f5c451}
 body{padding-top:var(--fxh)!important}
 #header,.header{top:var(--fxh)!important}

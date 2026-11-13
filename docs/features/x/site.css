@@ -9,9 +9,9 @@ body{margin:0;background:var(--bg);color:var(--text);font:400 17px/1.6 'Poppins'
 a{color:inherit}
 .top{position:sticky;top:0;z-index:20;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding:calc(12px + env(safe-area-inset-top)) max(20px,env(safe-area-inset-right)) 12px max(20px,env(safe-area-inset-left));background:rgba(0,0,0,.86);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .top .name{font:600 22px/1.2 'Manrope',sans-serif;text-decoration:none;letter-spacing:-.01em}
-.top nav{display:flex;gap:4px;flex-wrap:wrap}
-.top nav a{text-decoration:none;font-size:15px;padding:10px 14px;border-radius:999px;color:var(--dim)}
-.top nav a.on,.top nav a:active{color:var(--text);background:#1c1c1c}
+.top nav{display:flex;gap:8px;flex-wrap:wrap}
+.top nav a{text-decoration:none;font:600 16px/1 -apple-system,system-ui,sans-serif;padding:12px 18px;border-radius:999px;color:var(--text);border:1px solid #444}
+.top nav a.on,.top nav a:active{color:#000;background:var(--accent);border-color:var(--accent)}
 main{max-width:1500px;margin:0 auto;padding:28px max(20px,env(safe-area-inset-right)) calc(90px + env(safe-area-inset-bottom)) max(20px,env(safe-area-inset-left))}
 h1{font:600 clamp(28px,4.2vw,44px)/1.15 'Manrope',sans-serif;letter-spacing:-.02em;margin:6px 0 12px;text-wrap:balance}
 h2{font:600 clamp(21px,2.6vw,28px)/1.2 'Manrope',sans-serif;margin:44px 0 4px;scroll-margin-top:90px}
