@@ -132,7 +132,7 @@ def main():
                 big = os.path.join(OUT, 'img', c['slug'], i['key'] + '.webp')
                 if not size_of.get(big): continue
                 w, h = size_of[big]
-                cap = ' · '.join(x for x in (i['label'], i['date']) if x)
+                cap = ''   # no file name or date under the images: Andrew talks through them
                 imgs.append({'full': f"../img/{c['slug']}/{i['key']}.webp", 'thumb': f"../img/{c['slug']}/{i['key']}_t.webp", 'w': w, 'h': h, 'cap': cap})
             if imgs: sections.append((title, blurb, imgs)); total += len(imgs)
             if imgs and key in ('final', 'render'): cover = cover or imgs[-1]['thumb']
