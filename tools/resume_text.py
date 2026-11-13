@@ -43,10 +43,8 @@ JOBS = [
 def resume_body(img, gallery):
     b = ("<div class='cv'><h1>Andrew Dat Tran</h1><p class='lede'>Illustrator, concept artist, background painter and educator. Aliso Viejo, CA.</p>"
          "<p class='note'>(949) 690-4546 &nbsp;·&nbsp; tranandrew16@gmail.com &nbsp;·&nbsp; andrewtranart.com &nbsp;·&nbsp; linkedin.com/in/andrew-d-tran</p>"
-         "<div class='fit'>")
-    for want, have, extra, href, link in FIT:
-        pass
-    b += "</div><h2>Experience</h2>"
+         "<p class='lede'>I paint for licensed franchises and direct other artists through briefs, reviews and paintovers.</p>")
+    b += "<h2>Experience</h2>"
     for org, role, dates, sub, bullets in JOBS:
         b += f"<div class='job'><div class='jh'><b>{esc(org)}</b><span>{esc(dates)}</span></div><p class='role'>{esc(role)}</p><p class='note'>{esc(sub)}</p><ul>" + ''.join(f"<li>{esc(x)}</li>" for x in bullets) + "</ul></div>"
     b += ("<h2>Education</h2><p>Laguna College of Art + Design. BFA, Entertainment Design. Summa cum laude.</p>"
