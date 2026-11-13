@@ -138,6 +138,7 @@ def main():
             if imgs and key in ('final', 'render'): cover = cover or imgs[-1]['thumb']
         if not sections or all(t.startswith('References') for t, _, _ in sections): continue
         cover = cover or sections[-1][2][-1]['thumb']
+        if OV.get('covers', {}).get(c['slug']): cover = f"../img/{c['slug']}/{OV['covers'][c['slug']]}_t.webp"
         body = f"<p class='crumb'><a href='../'>Process</a></p><h1>{esc(c['name'])}</h1>"
         body += "<nav class='jump'>" + ''.join(f"<a href='#s{n}'>{esc(t)} </a>" for n, (t, b, im) in enumerate(sections)) + "</nav>"
         for n, (t, b, im) in enumerate(sections):
@@ -145,11 +146,11 @@ def main():
         page(os.path.join(OUT, c['slug'], 'index.html'), c['name'] + ' process', body, depth=2, active='Process')
         index_cards.append((c['name'], c['slug'], cover.replace('../', ''), total, [t for t, _, _ in sections]))
     index_cards.sort(key=lambda c: ('Feedback and notes' not in c[4], c[1] != 'doctor-doom-infamous-iron-man', -len(c[4]), -c[3]))   # redlined characters on top, then   # Doctor Doom first (pose and thumbnail options), then the most complete stories
-    body = "<h1>Process</h1><p class='note'>Marvel Puzzle Quest. Broken Circle Studios, 505 Games, Marvel. Art direction: Amber Ansdell.</p><div class='cards'>" \
-           "<a class='card' href='comps/'><img loading='lazy' src='cover-comps.webp' alt=''><b>Color comps for animation backgrounds</b></a>"
-    for name, s, cover, total, stages in index_cards:
-        body += f"<a class='card' href='{s}/'><img loading='lazy' src='{cover}' alt=''><b>{esc(name)}</b></a>"
-    for s_, n_ in PERSONAL: body += f"<a class='card' href='{s_}/'><img loading='lazy' src='cover-{s_}.webp' alt=''><b>{esc(n_)}</b></a>"
+    cards = [('comps', 'Color comps for animation backgrounds', 'cover-comps.webp')] + [(s_, n_, cv) for n_, s_, cv, _, _ in index_cards] + [(s_, n_, f'cover-{s_}.webp') for s_, n_ in PERSONAL]
+    order = {s_: n for n, s_ in enumerate(OV.get('card_order', []))}   # Andrew's own ordering from the review page; anything new goes after it
+    cards.sort(key=lambda c: order.get(c[0], len(order)))
+    body = "<h1>Process</h1><p class='note'>Marvel Puzzle Quest. Broken Circle Studios, 505 Games, Marvel. Art direction: Amber Ansdell.</p><div class='cards'>"
+    for s_, n_, cv in cards: body += f"<a class='card' href='{s_}/'><img loading='lazy' src='{cv}' alt=''><b>{esc(n_)}</b></a>"
     body += "</div>"
     page(os.path.join(OUT, 'index.html'), 'Process', body, depth=1, active='Process')
     Image.open(os.path.join(OUT, index_cards[0][2])).save(os.path.join(OUT, 'cover.webp'))

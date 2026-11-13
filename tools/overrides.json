@@ -402,13 +402,15 @@
     "07e7fcfef01c",
     "165a5efc15ba",
     "1f20c2156b53",
-    "4794437950d0",
-    "4a4b865b0cd4",
     "900eff206228",
     "98d3f3397974",
     "a658fb046805"
    ],
    "mv": {}
   }
- }
+ },
+ "covers": {
+  "cyclops-hellfire-gala": "0522c167f0cd"
+ },
+ "card_order": []
 }

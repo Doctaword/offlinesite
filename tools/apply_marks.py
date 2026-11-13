@@ -9,6 +9,7 @@ for f in sorted(glob.glob(os.path.join(sys.argv[1], '*.json'))):
     dl = m.get('del', []); mv = m.get('mv', {})
     if pid == 'process':
         ov['drop_pages'] = sorted(set(ov['drop_pages']) | {d[5:] for d in dl if d.startswith('card-')})
+        if m.get('order'): ov['card_order'] = [d[5:] for d in m['order'] if d.startswith('card-')]   # order of the cards on the Process page
     elif pid.startswith('process.') and pid[8:] not in ('comps', 'spinefall-gate', 'war-cry', 'circles-of-sin'):   # those pages are built by features.py
         o = ov['process'].setdefault(pid[8:], {'del': [], 'mv': {}})
         o['del'] = sorted(set(o['del']) | set(dl))
