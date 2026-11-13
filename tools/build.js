@@ -113,7 +113,7 @@ const renamed = [];
       continue;
     }
     fs.copyFileSync(src, path.join(DOCS, r));
-    if (f === 'index.html') { if (!pages.includes(rel)) pages.push(rel); version += fs.statSync(src).size + ':'; }
+    if (f === 'index.html') { if (!pages.includes(rel)) pages.push(rel); version += require('crypto').createHash('sha1').update(fs.readFileSync(src)).digest('hex').slice(0, 8) + ':'; }   // content, not size: a move between sections keeps the size
     else { fileIdx[r] = files.length; files.push([r, TYPE_BY_EXT[path.extname(f).toLowerCase()] || 'application/octet-stream', fs.statSync(src).size]); version += r + fs.statSync(src).size; }
   }
 })(EXTRA, '');
