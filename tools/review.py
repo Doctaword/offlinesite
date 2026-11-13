@@ -2,12 +2,13 @@
 Every image and text block gets a stable id, so marks made on the review page can be applied by the generators.
 Usage: python3 review.py <outDir>   -> <outDir>/data.json and <outDir>/s/<n>.jpg (thumbnail sheets)
 """
-import os, sys, re, json, hashlib
+import os, sys, re, json, hashlib, time
 from bs4 import BeautifulSoup
 from PIL import Image
 Image.MAX_IMAGE_PIXELS = None
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FX = os.path.join(ROOT, 'extra', 'features'); OUT = sys.argv[1]
+STAMP = format(int(time.time()), 'x')   # new sheet names each run, so a cached old sheet is never paired with new data
 CELL = 260; COLS = 6; PER = 48
 
 def slug(s): return re.sub(r'[^a-z0-9]+', '-', s.lower()).strip('-')
@@ -64,8 +65,8 @@ def main():
         for i, it in enumerate(chunk):
             im = Image.open(it.pop('f')).convert('RGB'); im.thumbnail((CELL, CELL))
             sheet.paste(im, ((i % COLS) * CELL + (CELL - im.width) // 2, (i // COLS) * CELL + (CELL - im.height) // 2))
-            it['s'] = [n // PER, i % COLS, i // COLS, rows]
-        sheet.save(os.path.join(OUT, 's', f'{n // PER}.jpg'), quality=74)
+            it['s'] = [f'{STAMP}-{n // PER}', i % COLS, i // COLS, rows]
+        sheet.save(os.path.join(OUT, 's', f'{STAMP}-{n // PER}.jpg'), quality=74)
     json.dump({'cols': COLS, 'pages': pages}, open(os.path.join(OUT, 'data.json'), 'w'), separators=(',', ':'))
     print('pages', len(pages), 'images', len(imgs), 'text', sum(1 for p in pages for s in p['secs'] for it in s['items'] if it['k'] == 't'), 'sheets', (len(imgs) + PER - 1) // PER)
 
