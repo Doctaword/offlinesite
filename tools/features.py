@@ -225,6 +225,20 @@ def direction():
               mk(ls('ED241F22/ED241/Week2/crit'), 'Sketch review with my redlines')))
     rounds = mk(ls('ED241F22/ED241/Week7/Drawovers'), 'Round 1, week 7: drawover') + mk(ls('ED241F22/ED241/Week9/paintovers'), 'Round 2, week 9: paintover') + mk(ls('ED241F22/ED241/Week11/paintovers'), 'Round 3, week 11: paintover')
     S.append(('rounds', 'Three review rounds', 'The same twelve artists at week 7, week 9 and week 11 of a character project. Each canvas holds their reference, their current pass and my drawover or paintover, so the direction given in one round can be checked against the next.', rounds))
+    E2 = os.path.join(UP, 'env2')
+    e2 = [(f'brief/p-0{n}.png', 'My brief') for n in (1, 2, 6)] + \
+         [('final/Group 1/' + f, 'Team 1: Sunken Civilization') for f in (
+             'Connor Gonzalez/2_EXTERIOR_thumbnailing.png', 'Connor Gonzalez/2_EXTERIOR_turnaround_blockout.png', 'Connor Gonzalez/2_EXTERIOR_lineart.png', 'Connor Gonzalez/2_EXTERIOR_final_colored_lit.png',
+             'Connor Gonzalez/3_INTERIOR_final_colored_lit.png', 'Connor Gonzalez/4_PROPPAGE_final_colored_lit.png',
+             'Snappy Shievitz/Signaltower_EXT1_RENDER3_combined.png', 'Snappy Shievitz/Signaltower_EXT3_RENDER1_combined.png', 'Snappy Shievitz/Signaltower_INT2_RENDER1_combined.png', 'Snappy Shievitz/Signaltower_INT3_RENDER1_combined.png',
+             'pinetree lin/Illustration3(1).png', 'pinetree lin/Illustration5 2.png', 'pinetree lin/Illustration10.png')] + \
+         [('final/Group 2/' + f, 'Team 2: Highlands of Myth') for f in (
+             'Amber Hong/amberhong_upperfront3.4_final_v1.png', 'Amber Hong/amberhong_backt3.4_color_final_v1.png', 'Amber Hong/amberhong_centerpiece_final_v1.png', 'Amber Hong/amberhong_tree_interior_color_final_v1.png',
+             'Iris Huang/Ext._Tree_Lines.png', 'Iris Huang/Tree_Int._34 1.png', 'Iris Huang/Tree_Int._34.png', 'Iris Huang/Props 1.PNG', 'Iris Huang/Front mural.PNG')] + \
+         [('final/Group 3/Ian Quinn/' + f, 'Team 3: Dieselpunk Metropolis') for f in (
+             'Quinn_Final Line_Front View.png', 'Quinn_Final_Front View.png', 'Quinn_Final_Rear View.png', 'Quinn_Final_Interior.png', 'Quinn_Final_Prop Page.png')]
+    S.append(('team-pitch', 'Team pitch project', 'Environment Design 2. Three teams, eight weekly milestones, one shared world each.',
+              mk([os.path.join(E2, f) for f, _ in e2], lambda f: dict((os.path.join(E2, a), b) for a, b in e2)[f], trim=False)))
     demos = [('Env Design 1/cavedemo.png', 'Environment demo: cave interior'), ('Env Design 1/roomdemo.png', 'Environment demo: room cutaway'), ('Env Design 1/week5/demo.png', 'Environment demo'),
              ('Env Design 1/demowk11.png', 'Environment demo: gate design'), ('Env Design 1/week7demo.png', 'Environment demo: prop and signage set'), ('Env Design 1/demo.png', 'Environment demo: value and proportion'),
              ('FD163BS23/critdemo.png', 'Review demo: interior cutaway'), ('FD163BS23/critdemo2.png', 'Review demo: interior cutaway, second pass'), ('FD163BS23/week12/Emily Alvarez/drawoversdemo.png', 'Drawover demo'),
