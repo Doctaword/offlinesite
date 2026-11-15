@@ -86,7 +86,10 @@
             return fetch(j[0] + '?__fresh=1', { cache: 'no-store' }).then(function (r) {
               if (!r.ok) throw new Error(r.status);
               return cache.put(j[0], r);
-            }).catch(function (e) { if (tries > 0) return one(j, tries - 1); failed++; console.warn('could not save', j[0], e); });
+            }).catch(function (e) {
+              if (tries > 0) return new Promise(function (ok) { setTimeout(ok, /429|403/.test(e && e.message) ? 20000 : 1500); }).then(function () { return one(j, tries - 1); });
+              failed++; console.warn('could not save', j[0], e);
+            });
           }
           function worker() {
             if (i >= jobs.length) return Promise.resolve();
@@ -94,7 +97,7 @@
             return one(j, 2).then(function () { got += j[1]; show(); return worker(); });
           }
           show();
-          var ws = []; for (var n = 0; n < 6; n++) ws.push(worker());
+          var ws = []; for (var n = 0; n < 4; n++) ws.push(worker());
           return Promise.all(ws).then(function () {
             if (failed) { say('Could not save ' + failed + ' files. Reopen with internet to retry.', '', 0); return; }
             keys.forEach(function (k) { if (!wanted[k.url]) cache.delete(k); });
